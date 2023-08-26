@@ -1,10 +1,10 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-// : webpack.Configuration
+
 export type BuildMode = 'production' | 'development';
 
-export interface buildEnv{
+export interface buildEnv {
     mode: BuildMode,
     port: number,
 }
@@ -14,31 +14,37 @@ export default (env: buildEnv) => {
     const PORT = env.port || 3000;
     const isDev = mode === 'development';
 
+    // : webpack.Configuration
     const config = {
         mode,
         entry: path.resolve(__dirname, 'src', 'index.tsx'),
         devtool: isDev ? 'inline-source-map' : undefined,
+
         devServer: isDev ? {
+            // static: {
+            //     directory: path.join(__dirname, 'public'),
+            // },
             port: PORT,
             open: true
         } : undefined,
+
         module: {
             rules: [
+                {
+                    test: /\.(js|jsx|tsx)$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env']
+                        }
+                    }
+                },
                 {
                     test: /\.tsx?$/,
                     use: 'ts-loader',
                     exclude: /node_modules/,
                 },
-                {
-                    test: /\.(js|jsx|tsx)$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader",
-                        options: {
-                            presets: ['@babel/preset-env']
-                        }
-                    }
-                }
             ],
         },
         resolve: {
@@ -57,5 +63,5 @@ export default (env: buildEnv) => {
         ],
     };
 
-    return config
+    return config;
 };
