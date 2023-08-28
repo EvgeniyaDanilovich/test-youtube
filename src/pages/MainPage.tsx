@@ -6,6 +6,8 @@ import { FilmsWrapper } from './styled';
 import { Modal } from '../components/Modal/Modal';
 import { Skeleton } from '../components/Skeleton/Skeleton';
 import { fetchFilmsData } from '../store/services/fetchFilmsData/fetchFilmsData';
+import { useGetFilmQuery } from '../store/services/filmService/filmApi';
+import { FilmsData } from '../store/services/filmService/types';
 
 interface MainPageProps {
     themeToggler: () => void;
@@ -14,11 +16,15 @@ interface MainPageProps {
 const MainPage = memo(({ themeToggler }: MainPageProps) => {
     const dispatch = useAppDispatch();
     const [modalActive, setModalActive] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
 
-    const films = useSelector((state: StateSchema) => state.main.films);
+    const { data: films, error, isLoading, refetch } = useGetFilmQuery(page);
+
+    // const films = useSelector((state: StateSchema) => state.main.films);
     useEffect(() => {
+        console.log(films);
         // dispatch(fetchFilmsData());
-    }, []);
+    }, [films]);
 
     const handleOpen = () => {
         setModalActive(true);
@@ -28,6 +34,26 @@ const MainPage = memo(({ themeToggler }: MainPageProps) => {
         themeToggler();
     };
 
+    const showMore = () => {
+        setPage(page => page + 1);
+        refetch();
+    };
+
+    if (error) {
+        return (<div>Произошла ошибка</div>);
+    }
+
+    if (isLoading) {
+        return (
+            <FilmsWrapper>
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+            </FilmsWrapper>
+        );
+    }
+
     return (
         <div>
             dsf
@@ -36,6 +62,7 @@ const MainPage = memo(({ themeToggler }: MainPageProps) => {
                     <FilmCard key={film.id} film={film} />
                 ))}
             </FilmsWrapper>
+            <button onClick={showMore}>Показать больше</button>
             <button onClick={handleOpen}>Open</button>
             <button onClick={handleTheme}>Switch theme</button>
 

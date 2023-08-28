@@ -1,15 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { mainReducer, type MainScheme } from './slices/mainSlice';
 import { useDispatch } from 'react-redux';
+import { filmApi } from './services/filmService/filmApi';
 
 export interface StateSchema {
     main: MainScheme;
+    [filmApi.reducerPath]: filmApi.reducer
 }
 
 export const store = configureStore<StateSchema>({
     reducer: {
-        main: mainReducer
-    }
+        main: mainReducer,
+        [filmApi.reducerPath]: filmApi.reducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(filmApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>
