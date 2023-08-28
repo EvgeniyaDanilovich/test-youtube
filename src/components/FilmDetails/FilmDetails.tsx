@@ -16,7 +16,7 @@ export const FilmDetails = memo(({ film }: FilmDetailsProps) => {
             {/* </iframe> */}
             <div>
             <div>{film.name}</div>
-            <div>{film.premiere.world}</div>
+            {/* <div>{film.premiere.world}</div> */}
             </div>
         </>
     );

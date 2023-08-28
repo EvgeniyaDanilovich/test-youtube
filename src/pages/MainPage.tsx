@@ -18,7 +18,7 @@ const MainPage = memo(({ themeToggler }: MainPageProps) => {
     const [modalActive, setModalActive] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
 
-    const { data: films, error, isLoading, refetch } = useGetFilmQuery(page);
+    const { data: films, error, isLoading } = useGetFilmQuery(page);
 
     // const films = useSelector((state: StateSchema) => state.main.films);
     useEffect(() => {
@@ -36,7 +36,6 @@ const MainPage = memo(({ themeToggler }: MainPageProps) => {
 
     const showMore = () => {
         setPage(page => page + 1);
-        refetch();
     };
 
     if (error) {
@@ -44,6 +43,7 @@ const MainPage = memo(({ themeToggler }: MainPageProps) => {
     }
 
     if (isLoading) {
+        console.log('loading//')
         return (
             <FilmsWrapper>
                 <Skeleton />
@@ -66,12 +66,12 @@ const MainPage = memo(({ themeToggler }: MainPageProps) => {
             <button onClick={handleOpen}>Open</button>
             <button onClick={handleTheme}>Switch theme</button>
 
-            <FilmsWrapper>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-            </FilmsWrapper>
+            {/* <FilmsWrapper> */}
+            {/*     <Skeleton /> */}
+            {/*     <Skeleton /> */}
+            {/*     <Skeleton /> */}
+            {/*     <Skeleton /> */}
+            {/* </FilmsWrapper> */}
 
             <Modal active={modalActive} setActive={setModalActive}>
                 modal here

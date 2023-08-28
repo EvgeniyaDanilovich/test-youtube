@@ -30,8 +30,16 @@ export const filmApi = createApi({
                 url: `/v1.3/movie?limit=16&selectFields=description+id+premiere+genres+poster.url+name+videos.trailers.url&page=${page}`
             }),
             transformResponse: (response: FilmsData) => response.docs,
-            // providesTags: result => ['Films' , ...result]
-            providesTags: ['Films']
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName
+            },
+            merge: (currentCache, newItems) => {
+                currentCache.push(...newItems)
+            },
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg
+            },
+            // providesTags: ['Films']
         })
     })
 });

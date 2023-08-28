@@ -5,10 +5,10 @@ import { filmApi } from './services/filmService/filmApi';
 
 export interface StateSchema {
     main: MainScheme;
-    [filmApi.reducerPath]: filmApi.reducer
+    // [filmApi.reducerPath]: filmApi.reducer
 }
-
-export const store = configureStore<StateSchema>({
+// <StateSchema>
+export const store = configureStore({
     reducer: {
         main: mainReducer,
         [filmApi.reducerPath]: filmApi.reducer
