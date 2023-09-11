@@ -1,14 +1,16 @@
-import React, { ChangeEvent, FormEvent, memo, useState } from 'react';
+import React, { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { mainActions } from '../../store/slices/mainSlice';
 import { fetchFilmByName } from '../../store/services/fetchFilmByName/fetchFilmByName';
-import { Theme } from '../App/types/ThemeTypes';
+import { Theme } from '../App/types/themeTypes';
 import {
     Checkbox, HeaderContainer, RowWrapper, Slider, Switch, Form,
     LogoWrapper, LogoText, InputText, SearchBtn
 } from './styled';
 import SearchIcon from '../../assets/images/search.svg';
 import LogoIcon from '../../assets/images/logo.svg';
+import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsData';
+import { Genres } from '../App/types/genres';
 
 
 interface HeaderProps {
@@ -35,13 +37,21 @@ export const Header = memo(({ switchTheme }) => {
     };
 
     const onSwitchTheme = () => {
-        switchTheme()
+        switchTheme();
     };
+
+    const goAllFilms = useCallback(() => {
+        dispatch(mainActions.resetSearch());
+        dispatch(mainActions.resetFilms());
+        dispatch(mainActions.setGenre(Genres.ALL));
+        // @ts-ignore
+        dispatch(fetchFilmsData(1));
+    }, []);
 
     return (
         <HeaderContainer>
             <RowWrapper>
-                <LogoWrapper>
+                <LogoWrapper onClick={goAllFilms}>
                     <LogoIcon />
                     <LogoText>ModsenFilms</LogoText>
                 </LogoWrapper>
@@ -54,7 +64,6 @@ export const Header = memo(({ switchTheme }) => {
                     />
                     <SearchBtn><SearchIcon /></SearchBtn>
                 </Form>
-                {/* <button onClick={onSwitchTheme}>Switch theme</button> */}
 
                 <Switch>
                     <Checkbox type={'checkbox'} checked={checked} onChange={() => setChecked(!checked)} />

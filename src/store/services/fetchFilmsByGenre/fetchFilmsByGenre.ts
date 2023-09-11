@@ -17,8 +17,8 @@ export const fetchFilmsByGenre = createAsyncThunk<Film[]>(
         const options = {
             method: 'GET',
             headers: {
-                // 'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'   // me
-                'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'  // kate
+                'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'   // me
+                // 'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'  // kate
                 // 'X-API-KEY': '574b2ae2-dd69-4aae-9090-fef74b488719',
                 // 'Content-Type': 'application/json',
             }

@@ -1,4 +1,4 @@
-import { ITheme } from '../types/ThemeTypes';
+import { ITheme } from '../types/themeTypes';
 
 export const themeLight: ITheme = {
     colors: {

@@ -91,6 +91,7 @@ export const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: 10px;
+  cursor: pointer;
 `;
 
 // export const StyledLogo = styled(LogoIcon)`

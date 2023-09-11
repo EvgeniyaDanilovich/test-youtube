@@ -16,8 +16,8 @@ export const fetchFilmsData = createAsyncThunk<Film[]>(
         const options = {
             method: 'GET',
             headers: {
-                // 'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'   // me
-                'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'  // kate
+                'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'   // me
+                // 'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'  // kate
                 // 'X-API-KEY': '574b2ae2-dd69-4aae-9090-fef74b488719',
                 // 'Content-Type': 'application/json',
             }
@@ -26,12 +26,8 @@ export const fetchFilmsData = createAsyncThunk<Film[]>(
         try {
             const response = await fetch(url, options);
             const result = await response.json();
-            console.log(result.docs)
+            // console.log(result.docs)
             return result.docs;
-
-            // if (!response.data) {
-            //     throw new Error();
-            // }
         } catch (e) {
             return thunkAPI.rejectWithValue('Error');
         }

@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Header } from '../Header/Header';
 // import { MainPageAsync as MainPage } from '../../pages/MainPage.async';
 import { useTheme } from './providers/ThemeProvider/hooks/useTheme';
-import { Theme } from './types/ThemeTypes';
+import { Theme } from './types/themeTypes';
 // import { themeDark, themeLight } from './providers/ThemeProvider/ThemeProvider';
 import { Global } from './styles/globalStyles';
 import { ThemeProvider } from 'styled-components';

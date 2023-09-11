@@ -22,22 +22,25 @@ export const MainContainer = styled.div`
   padding: 0 15px;
 `;
 
+export const SkeletonItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+`;
+
 const MainPage = memo(() => {
     const dispatch = useAppDispatch();
-    const [modalActive, setModalActive] = useState<boolean>(false);
     const films = useSelector((state: StateSchema) => state.main.films);
     const page = useSelector((state: StateSchema) => state.main.page);
     const genre = useSelector((state: StateSchema) => state.main.genre);
+    const isSearch = useSelector((state: StateSchema) => state.main.isSearch);
+    const isLoading = useSelector((state: StateSchema) => state.main.isLoading);
+    const error = useSelector((state: StateSchema) => state.main.error);
 
     useEffect(() => {
-        console.log(page);
         // @ts-ignore
         // dispatch(fetchFilmsData(page));
-    }, []);
-
-    const handleOpen = () => {
-        setModalActive(true);
-    };
+    }, [isLoading]);
 
     const showMore = () => {
         // dispatch(mainActions.setPage(page + 1));
@@ -51,40 +54,44 @@ const MainPage = memo(() => {
         }
     };
 
-    // if (error) {
-    //     return (<div>Произошла ошибка</div>);
-    // }
-    //
-    // if (isLoading) {
-    //     return (
-    //         <FilmsWrapper>
-    //             <Skeleton />
-    //             <Skeleton />
-    //             <Skeleton />
-    //             <Skeleton />
-    //         </FilmsWrapper>
-    //     );
-    // }
-
-    // const switchGenre = useCallback((genre) => {
-    //     setGenre(genre);
-    //     setCurrentFilms(filmsByGenre)
-    // }, [filmsByGenre])
+    if (error) {
+        return (<div>Произошла ошибка</div>);
+    }
 
     return (
         <MainContainer>
-            <GenresList />
+            {!isSearch && <GenresList />}
             <FilmsWrapper>
                 {films && films.map((film) => (
                     <FilmCard key={film.id} film={film} />
                 ))}
             </FilmsWrapper>
-            <button onClick={showMore}>Показать больше</button>
 
-            {/* <button onClick={handleOpen}>Open</button> */}
-            {/* <Modal active={modalActive} setActive={setModalActive}> */}
-            {/*     modal here */}
-            {/* </Modal> */}
+            {isLoading &&
+                <FilmsWrapper>
+                    <SkeletonItem>
+                        <Skeleton />
+                        <Skeleton width={'200px'} height={'20px'} />
+                        <Skeleton width={'100px'} height={'20px'} />
+                    </SkeletonItem>
+                    <SkeletonItem>
+                        <Skeleton />
+                        <Skeleton width={'200px'} height={'20px'} />
+                        <Skeleton width={'100px'} height={'20px'} />
+                    </SkeletonItem>
+                    <SkeletonItem>
+                        <Skeleton />
+                        <Skeleton width={'200px'} height={'20px'} />
+                        <Skeleton width={'100px'} height={'20px'} />
+                    </SkeletonItem>
+                    <SkeletonItem>
+                        <Skeleton />
+                        <Skeleton width={'200px'} height={'20px'} />
+                        <Skeleton width={'100px'} height={'20px'} />
+                    </SkeletonItem>
+                </FilmsWrapper>
+            }
+            {!isLoading || !isSearch && <button onClick={showMore}>Показать больше</button>}
         </MainContainer>
     );
 });
