@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Film } from '../../store/slices/mainSlice';
+import { Film } from '../../store/types/filmTypes';
 
 interface FilmDetailsProps {
     film: Film;

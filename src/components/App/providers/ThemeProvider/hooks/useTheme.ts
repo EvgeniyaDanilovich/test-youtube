@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LOCAL_STORAGE_THEME_KEY, Theme } from '../types/ThemeTypes';
+import { LOCAL_STORAGE_THEME_KEY, Theme } from '../../../types/ThemeTypes';
 //
 // export interface UseThemeResult [
 //     theme: Theme;

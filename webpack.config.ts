@@ -21,15 +21,16 @@ export default (env: buildEnv) => {
         devtool: isDev ? 'inline-source-map' : undefined,
 
         devServer: isDev ? {
-            // static: {
-            //     directory: path.join(__dirname, 'public'),
-            // },
             port: PORT,
             open: true
         } : undefined,
 
         module: {
             rules: [
+                {
+                    test: /\.svg$/,
+                    use: ['@svgr/webpack'],
+                },
                 {
                     test: /\.(js|jsx|tsx)$/,
                     exclude: /node_modules/,
@@ -47,7 +48,30 @@ export default (env: buildEnv) => {
                 },
             ],
         },
+
+        // Uncaught TypeError: The "original" argument must be of type Function
+        // Module not found: Error: Can't resolve 'diagnostics_channel, async_hooks, worker_threads
         resolve: {
+            fallback: {
+                "buffer": false,
+                "stream": false,
+                "assert": false,
+                "url": false,
+                "http": false,
+                "util": false,
+                "zlib": false,
+                "os": false,
+                "querystring": false,
+                "https": false,
+                "console": false,
+                "net": false,
+                "tls": false,
+                // "diagnostics_channel": false,
+                // "async_hooks": false,
+                // "perf_hooks": false,
+                // "worker_threads": false,
+                "crypto": require.resolve("crypto-browserify")
+            },
             extensions: ['.tsx', '.ts', '.js'],
         },
         output: {

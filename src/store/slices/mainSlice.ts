@@ -1,82 +1,86 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { fetchFilmsData } from '../services/fetchFilmsData/fetchFilmsData';
-
-// export interface Film {
-//     id: string;
-//     description: string;
-//     genre: string[];
-//     image: string;
-//     rank: number;
-//     rating: string;
-//     thumbnail: string;
-//     title: string;
-//     year: number;
-// }
-export interface IGenres {
-    name: string;
-}
-
-export interface IPremiere {
-    russia: string;
-    world: string;
-}
-
-export interface IPoster {
-    url: string;
-}
-
-export interface IVideoTrailers{
-    url: string;
-}
-
-export interface IVideo{
-    trailers: IVideoTrailers[]
-}
-
-export interface Film {
-    id: number;
-    name: string;
-    description: string;
-    genres: IGenres[];
-    premiere: IPremiere;
-    poster: IPoster;
-    videos: IVideo;
-}
+import { fetchFilmsByGenre } from '../services/fetchFilmsByGenre/fetchFilmsByGenre';
+import { Film } from '../types/filmTypes';
+import { fetchFilmByName } from '../services/fetchFilmByName/fetchFilmByName';
+import { Simulate } from 'react-dom/test-utils';
+import error = Simulate.error;
 
 export interface MainScheme {
-    films?: Film[];
-    // page: number
+    films: Film[];
+    isLoading: boolean;
+    error?: string | undefined;
+    genre: string;
+    page: number;
 }
 
 const initialState: MainScheme = {
-    films: undefined
+    films: [],
+    isLoading: false,
+    error: undefined,
+    genre: '',
+    page: 1
 };
 
 export const counterSlice = createSlice({
     name: 'main',
     initialState,
     reducers: {
-        increment: (state) => {
+        resetFilms: (state: MainScheme) => {
+            state.films = [];
+            state.page = 1;
         },
-        decrement: (state) => {
-
+        setPage: (state: MainScheme, action: PayloadAction<number>) => {
+            state.page = action.payload;
+        },
+        setGenre: (state: MainScheme, action: PayloadAction<string>) => {
+            state.genre = action.payload;
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchFilmsData.pending, (state) => {
-            // state.error = undefined;
-            // state.isLoading = true;
+        builder.addCase(fetchFilmsData.pending, (state: MainScheme) => {
+            state.error = undefined;
+            state.isLoading = true;
         });
         builder.addCase(fetchFilmsData.fulfilled, (state: MainScheme, action: PayloadAction<Film[]>) => {
             if (action.payload) {
-                state.films = action.payload;
+                state.films = [...state.films, ...action.payload];
+                state.isLoading = false;
+                state.page = state.page + 1;
             }
         });
-        // builder.addCase(fetchFilmsData.fulfilled, (state: MainScheme, action: PayloadAction<Film[]>) => {
-        //     state.films = action.payload;
-        // });
-        builder.addCase(fetchFilmsData.rejected, (state, action) => {
-            // state.isLoading = false;
+        builder.addCase(fetchFilmsData.rejected, (state: MainScheme, action) => {
+            state.isLoading = false;
+            // state.error = action.payload;
+        });
+        builder.addCase(fetchFilmsByGenre.pending, (state: MainScheme) => {
+            state.error = undefined;
+            state.isLoading = true;
+        });
+        builder.addCase(fetchFilmsByGenre.fulfilled, (state: MainScheme, action: PayloadAction<Film[]>) => {
+            if (action.payload) {
+                // console.log(action.payload);
+                state.films = [...state.films, ...action.payload];
+                state.page = state.page + 1;
+            }
+        });
+        builder.addCase(fetchFilmsByGenre.rejected, (state: MainScheme, action) => {
+            state.isLoading = false;
+            // state.error = action.payload;
+        });
+        builder.addCase(fetchFilmByName.pending, (state: MainScheme) => {
+            state.error = undefined;
+            state.isLoading = true;
+        });
+        builder.addCase(fetchFilmByName.fulfilled, (state: MainScheme, action: PayloadAction<Film[]>) => {
+            if (action.payload) {
+                // console.log(action.payload);
+                state.films = action.payload;
+                state.page = 1;
+            }
+        });
+        builder.addCase(fetchFilmByName.rejected, (state: MainScheme, action) => {
+            state.isLoading = false;
             // state.error = action.payload;
         });
     }

@@ -7,7 +7,9 @@ export enum Theme {
 
 export interface ITheme{
     colors: {
-        primary: string;
-        secondary: string
+        textPrimary: string;
+        textSecondary: string;
+        background: string;
+        extra: string;
     }
 }
