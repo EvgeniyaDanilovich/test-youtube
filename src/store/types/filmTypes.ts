@@ -22,11 +22,17 @@ export interface IVideo {
 export interface Film {
     id: number;
     name: string;
-    // description: string;
-    // genres: IGenres[];
+    genres: IGenres[];
     premiere: IPremiere;
     poster: IPoster;
     videos: IVideo;
+}
+
+export interface FilteredFilm {
+    _id: string,
+    _index: string,
+    _score: number,
+    _source: Film,
 }
 
 export interface FilmSearched {

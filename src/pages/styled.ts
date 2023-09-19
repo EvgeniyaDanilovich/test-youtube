@@ -20,6 +20,10 @@ export const MainContainer = styled.div`
   padding: 0 15px 50px 15px;
 `;
 
+export const Text = styled.p`
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
 export const StyledButton = styled.button`
   display: block;
   background-color: transparent;

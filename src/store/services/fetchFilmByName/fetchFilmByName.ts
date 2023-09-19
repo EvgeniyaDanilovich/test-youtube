@@ -17,7 +17,7 @@ export const fetchFilmByName = createAsyncThunk<Film[]>(
             // const response = await fetch(url, options);
             const response = await fetch(`${instance.baseUrl}v1.2/movie/search?query=${name}&limit=1`, instance.options);
             const result = await response.json();
-            console.log(result.docs);
+            // console.log(result.docs);
             return result.docs;
 
         } catch (e) {

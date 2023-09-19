@@ -23,12 +23,12 @@ export const fetchFilmsData = createAsyncThunk<Film[]>(
 
         try {
             const response = await fetch(
-                `${instance.baseUrl}v1.3/movie?limit=16&page=${page}&selectFields=id+premiere+poster.url+name+videos.trailers.url`,
+                `${instance.baseUrl}v1.3/movie?limit=16&page=${page}&selectFields=id+premiere+genres+poster.url+name+videos.trailers.url`,
                 instance.options
             );
             // const resultText = await response.text();
             const result = await response.json();
-            console.log(result);
+            // console.log(resultText);
             return result.docs;
         } catch (e) {
             return thunkAPI.rejectWithValue('Error');

@@ -1,12 +1,11 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { filmsActions } from '../../store/slices/filmsSlice';
-import { fetchFilmByName } from '../../store/services/fetchFilmByName/fetchFilmByName';
 import { LOCAL_STORAGE_THEME_KEY, Theme } from '../App/types/themeTypes';
 import { HeaderContainer, LogoText, LogoWrapper, RowWrapper } from './styled';
 import LogoIcon from '../../assets/images/logo.svg';
 import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsData';
-import { Genres } from '../App/types/genres';
+import { Enums, Messages } from '../App/types/enums';
 import { SwitchSlider } from '../SwitchSlider/SwitchSlider';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { useSearchFilmByNameMutation } from '../../store/services/searchService/searchService';
@@ -18,7 +17,7 @@ interface HeaderProps {
 export const Header = memo(({ switchTheme }: HeaderProps) => {
     const dispatch = useAppDispatch();
     const [checked, setChecked] = useState(false);
-    const [searchFilm, { data: film }] = useSearchFilmByNameMutation();
+    const [searchFilm, { data: films, isLoading, error }] = useSearchFilmByNameMutation();
 
     useEffect(() => {
         const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme;
@@ -26,14 +25,27 @@ export const Header = memo(({ switchTheme }: HeaderProps) => {
     }, []);
 
     useEffect(() => {
-        console.log(film);
-    }, [film]);
+        dispatch(filmsActions.setIsLoading(isLoading));
+        if (films && !films.length) {
+            dispatch(filmsActions.setMessage(Messages.NOT_FOUND));
+        } else {
+            dispatch(filmsActions.setFilteredFilms(films));
+        }
+    }, [films, isLoading]);
+
+    useEffect(() => {
+        if (error) {
+            dispatch(filmsActions.setError('Some error'));
+        }
+        console.log(error);
+    }, [error]);
 
     const handleOnSubmit = useCallback((inputValue) => {
         searchFilm(inputValue);
         dispatch(filmsActions.resetFilms());
+        dispatch(filmsActions.setSearch(true));
         // @ts-ignore
-        dispatch(fetchFilmByName(inputValue));
+        // dispatch(fetchFilmByName(inputValue));
     }, []);
 
     const onSwitchTheme = useCallback(() => {
@@ -41,9 +53,10 @@ export const Header = memo(({ switchTheme }: HeaderProps) => {
     }, [switchTheme]);
 
     const goAllFilms = useCallback(() => {
-        dispatch(filmsActions.resetSearch());
+        dispatch(filmsActions.setSearch(false));
         dispatch(filmsActions.resetFilms());
-        dispatch(filmsActions.setGenre(Genres.ALL));
+        dispatch(filmsActions.resetPagination());
+        dispatch(filmsActions.setGenre(Enums.ALL));
         // @ts-ignore
         dispatch(fetchFilmsData(1));
     }, []);

@@ -41,7 +41,7 @@ export const SearchForm = ({ handleOnSubmit }: SearchFormProps) => {
                 onChange={(e: ChangeEvent<HTMLInputElement>) => handleOnChange(e.target.value)}
                 type={'text'}
                 value={inputValue}
-                placeholder={'Search'}
+                placeholder={'Найти'}
             />
             <SearchBtn><SearchIcon /></SearchBtn>
         </Form>

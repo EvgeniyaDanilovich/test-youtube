@@ -1,17 +1,25 @@
 import React, { memo, useEffect } from 'react';
-import { FilmsWrapper, MainContainer, StyledButton, } from './styled';
+import { FilmsWrapper, MainContainer, StyledButton, Text } from './styled';
 import { FilmCard } from '../components/FilmCard/FilmCard';
 import { useSelector } from 'react-redux';
-import { StateSchema, useAppDispatch } from '../store/store';
+import { useAppDispatch } from '../store/store';
 import { fetchFilmsData } from '../store/services/fetchFilmsData/fetchFilmsData';
-import { fetchFilmsByGenre } from '../store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 import { GenresList } from '../components/GenresList/GenresList';
 import { FilmsSkeleton } from '../components/Skeleton/FilmsSkeleton';
-import { Genres } from '../components/App/types/genres';
+import { Enums } from '../components/App/types/enums';
 import {
-    selectError, selectFilms, selectFilmsMessage,
-    selectGenre, selectIsLoading, selectIsSearch, selectPage
+    selectError,
+    selectFilms,
+    selectFilteredFilms,
+    selectFromItem,
+    selectGenre,
+    selectIsLoading,
+    selectIsSearch,
+    selectMessage,
+    selectPage
 } from '../store/selectors/filmsSelectors';
+import { useFilterFilmsByGenreMutation } from '../store/services/searchService/searchService';
+import { filmsActions } from '../store/slices/filmsSlice';
 
 // import { Client } from '@elastic/elasticsearch';
 //
@@ -24,51 +32,51 @@ import {
 const MainPage = memo(() => {
     const dispatch = useAppDispatch();
     const films = useSelector(selectFilms);
-    const filmsMessage = useSelector(selectFilmsMessage);
+    const filteredFilms = useSelector(selectFilteredFilms);
+    const filmsMessage = useSelector(selectMessage);
     const page = useSelector(selectPage);
+    const fromItem = useSelector(selectFromItem);
     const genre = useSelector(selectGenre);
     const isSearch = useSelector(selectIsSearch);
     const isLoading = useSelector(selectIsLoading);
     const error = useSelector(selectError);
+    const [filterFilms, { data: filteredFilm, isLoading: isLoadingFilteredFilms, error: errorFilteredFilms }] = useFilterFilmsByGenreMutation();
 
     useEffect(() => {
-        // const f = async () => {
-        //     const elasticResult = await client.search({
-        //         index: 'test-index-3',
-        //         query: {
-        //             match: {
-        //                 "name": "Джентльмены"
-        //             }
-        //         }
-        //     })
-        //
-        //     console.log(await elasticResult)
-        // }
-
-        // f();
-
         // @ts-ignore
         dispatch(fetchFilmsData(page));
     }, []);
 
+    useEffect(() => {
+        if (filteredFilm) {
+            dispatch(filmsActions.setFilteredFilms(filteredFilm));
+        }
+    }, [filteredFilm]);
+
     const showMore = () => {
         console.log(page);
-        if (genre && genre !== Genres.ALL) {
+        if (genre && genre !== Enums.ALL) {
             // @ts-ignore
-            dispatch(fetchFilmsByGenre({ page, genre }));
+            // dispatch(fetchFilmsByGenre({ page, genre }));
+            console.log(fromItem);
+            filterFilms({ genre, fromItem });
         } else {
             // @ts-ignore
             dispatch(fetchFilmsData(page));
         }
     };
 
-    if (error) {
-        return (<div>Произошла ошибка</div>);
+    if (error || errorFilteredFilms) {
+        return (
+            <MainContainer>
+                <Text>Произошла ошибка</Text>
+            </MainContainer>
+        );
     }
 
     return (
         <MainContainer>
-            {!isSearch && <GenresList />}
+            {!isSearch && <GenresList filterFilms={filterFilms} />}
 
             <FilmsWrapper>
                 {films && films.map((film) => (
@@ -77,9 +85,20 @@ const MainPage = memo(() => {
                 {isLoading && <FilmsSkeleton />}
             </FilmsWrapper>
 
-            {filmsMessage && <div>{filmsMessage}</div>}
+            <FilmsWrapper>
+                {filteredFilms && filteredFilms.map((film) => (
+                    <FilmCard key={film._source.id} film={film._source} />
+                ))}
+                {isLoadingFilteredFilms && <FilmsSkeleton />}
+            </FilmsWrapper>
 
-            {isLoading || !isSearch && <StyledButton onClick={showMore}>Показать больше</StyledButton>}
+            {filmsMessage && <Text>{filmsMessage}</Text>}
+
+            {
+                (isLoading || isLoadingFilteredFilms || filmsMessage || isSearch) ?
+                    null
+                    : <StyledButton onClick={showMore}>Показать больше</StyledButton>
+            }
         </MainContainer>
     );
 });
