@@ -1,49 +1,49 @@
-import React, { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../store/store';
-import { mainActions } from '../../store/slices/mainSlice';
+import { filmsActions } from '../../store/slices/filmsSlice';
 import { fetchFilmByName } from '../../store/services/fetchFilmByName/fetchFilmByName';
-import { Theme } from '../App/types/themeTypes';
-import {
-    Checkbox, HeaderContainer, RowWrapper, Slider, Switch, Form,
-    LogoWrapper, LogoText, InputText, SearchBtn
-} from './styled';
-import SearchIcon from '../../assets/images/search.svg';
+import { LOCAL_STORAGE_THEME_KEY, Theme } from '../App/types/themeTypes';
+import { HeaderContainer, LogoText, LogoWrapper, RowWrapper } from './styled';
 import LogoIcon from '../../assets/images/logo.svg';
 import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsData';
 import { Genres } from '../App/types/genres';
-
+import { SwitchSlider } from '../SwitchSlider/SwitchSlider';
+import { SearchForm } from '../SearchForm/SearchForm';
+import { useSearchFilmByNameMutation } from '../../store/services/searchService/searchService';
 
 interface HeaderProps {
-    switchTheme: Theme | (() => void);
+    switchTheme: () => void;
 }
 
-// { switchTheme }: HeaderProps
-
-export const Header = memo(({ switchTheme }) => {
+export const Header = memo(({ switchTheme }: HeaderProps) => {
     const dispatch = useAppDispatch();
-    const [inputValue, setInputValue] = useState('');
     const [checked, setChecked] = useState(false);
+    const [searchFilm, { data: film }] = useSearchFilmByNameMutation();
 
-    const handleOnChange = (target) => {
-        setInputValue(target);
-    };
+    useEffect(() => {
+        const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme;
+        localTheme === Theme.DARK ? setChecked(true) : setChecked(false);
+    }, []);
 
-    const handleOnSubmit = (event) => {
-        event.preventDefault();
-        dispatch(mainActions.resetFilms());
+    useEffect(() => {
+        console.log(film);
+    }, [film]);
+
+    const handleOnSubmit = useCallback((inputValue) => {
+        searchFilm(inputValue);
+        dispatch(filmsActions.resetFilms());
         // @ts-ignore
         dispatch(fetchFilmByName(inputValue));
-        setInputValue('');
-    };
+    }, []);
 
-    const onSwitchTheme = () => {
+    const onSwitchTheme = useCallback(() => {
         switchTheme();
-    };
+    }, [switchTheme]);
 
     const goAllFilms = useCallback(() => {
-        dispatch(mainActions.resetSearch());
-        dispatch(mainActions.resetFilms());
-        dispatch(mainActions.setGenre(Genres.ALL));
+        dispatch(filmsActions.resetSearch());
+        dispatch(filmsActions.resetFilms());
+        dispatch(filmsActions.setGenre(Genres.ALL));
         // @ts-ignore
         dispatch(fetchFilmsData(1));
     }, []);
@@ -55,20 +55,10 @@ export const Header = memo(({ switchTheme }) => {
                     <LogoIcon />
                     <LogoText>ModsenFilms</LogoText>
                 </LogoWrapper>
-                <Form onSubmit={(e: FormEvent<HTMLFormElement>) => handleOnSubmit(e)}>
-                    <InputText
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => handleOnChange(e.target.value)}
-                        type={'text'}
-                        value={inputValue}
-                        placeholder={'Search'}
-                    />
-                    <SearchBtn><SearchIcon /></SearchBtn>
-                </Form>
 
-                <Switch>
-                    <Checkbox type={'checkbox'} checked={checked} onChange={() => setChecked(!checked)} />
-                    <Slider onClick={onSwitchTheme} checkedstatus={checked.toString()}></Slider>
-                </Switch>
+                <SearchForm handleOnSubmit={handleOnSubmit} />
+
+                <SwitchSlider action={onSwitchTheme} checkedStatus={checked} />
             </RowWrapper>
         </HeaderContainer>
     );

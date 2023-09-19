@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { mainActions } from '../../store/slices/mainSlice';
+import { filmsActions } from '../../store/slices/filmsSlice';
 import { fetchFilmsByGenre } from '../../store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsData';
 import { StateSchema, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { GenresListUl, GenresListItem } from './styled';
 import { Genres } from '../App/types/genres';
+import { selectGenre, selectPage } from '../../store/selectors/filmsSelectors';
 
 export const GenresList = () => {
     const dispatch = useAppDispatch();
@@ -14,10 +15,11 @@ export const GenresList = () => {
     const [activeComedy, setActiveComedy] = useState('');
     const [activeFantastic, setActiveFantastic] = useState('');
     const [activeDetective, setActiveDetective] = useState('');
-    const page = useSelector((state: StateSchema) => state.main.page);
-    const genre = useSelector((state: StateSchema) => state.main.genre);
+    const page = useSelector(selectPage);
+    const genre = useSelector(selectGenre);
 
     useEffect(() => {
+        console.log(page);
         if (genre === Genres.ALL) {
             resetGenre();
         }
@@ -29,20 +31,24 @@ export const GenresList = () => {
         setActiveComedy('');
         setActiveFantastic('');
         setActiveDetective('');
-        dispatch(mainActions.setGenre(Genres.ALL));
+        dispatch(filmsActions.setGenre(Genres.ALL));
     };
 
     const getAllGenres = useCallback(() => {
         resetGenre();
-        dispatch(mainActions.resetFilms());
+        dispatch(filmsActions.setPage(1));
+        dispatch(filmsActions.resetFilms());
         // @ts-ignore
-        dispatch(fetchFilmsData(page));
-    }, [page]);
+        dispatch(fetchFilmsData(1));
+    }, []);
 
     const switchGenre = useCallback((genre) => {
-        dispatch(mainActions.setPage(1));
-        dispatch(mainActions.resetFilms());
-        dispatch(mainActions.setGenre(genre));
+        console.log(page);
+        dispatch(filmsActions.setPage(1));
+        dispatch(filmsActions.resetFilms());
+        dispatch(filmsActions.setGenre(genre));
+
+        console.log(page);
 
         setActiveAll('');
         genre === Genres.DRAMA ? setActiveDrama(Genres.DRAMA) : setActiveDrama('');
@@ -52,10 +58,7 @@ export const GenresList = () => {
 
         if (genre) {
             // @ts-ignore
-            dispatch(fetchFilmsByGenre({ page, genre }));
-        } else {
-            // @ts-ignore
-            dispatch(fetchFilmsData(page));
+            dispatch(fetchFilmsByGenre({ page: 1, genre }));
         }
     }, [page, genre]);
 

@@ -1,51 +1,59 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { FilmsWrapper } from './styled';
-import { Modal } from '../components/Modal/Modal';
+import React, { memo, useEffect } from 'react';
+import { FilmsWrapper, MainContainer, StyledButton, } from './styled';
 import { FilmCard } from '../components/FilmCard/FilmCard';
-import { Skeleton } from '../components/Skeleton/Skeleton';
 import { useSelector } from 'react-redux';
 import { StateSchema, useAppDispatch } from '../store/store';
 import { fetchFilmsData } from '../store/services/fetchFilmsData/fetchFilmsData';
 import { fetchFilmsByGenre } from '../store/services/fetchFilmsByGenre/fetchFilmsByGenre';
-import { mainActions } from '../store/slices/mainSlice';
-import styled from 'styled-components';
 import { GenresList } from '../components/GenresList/GenresList';
+import { FilmsSkeleton } from '../components/Skeleton/FilmsSkeleton';
+import { Genres } from '../components/App/types/genres';
+import {
+    selectError, selectFilms, selectFilmsMessage,
+    selectGenre, selectIsLoading, selectIsSearch, selectPage
+} from '../store/selectors/filmsSelectors';
 
-interface MainPageProps {
-    themeToggler: () => void;
-}
-
-export const MainContainer = styled.div`
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 15px;
-`;
-
-export const SkeletonItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-`;
+// import { Client } from '@elastic/elasticsearch';
+//
+// const client = new Client({
+//     node: 'https://c2f49d7feaa948008026e0bb360cd821.us-central1.gcp.cloud.es.io',
+//     cloud: { id: 'test-youtube:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvOjQ0MyRjMmY0OWQ3ZmVhYTk0ODAwODAyNmUwYmIzNjBjZDgyMSQwMzcwOGZjOGE3ZjI0ZDJmYTBkMThjODUyNjM2YjY5Mg==' },
+//     auth: { apiKey: 'dk9KTHA0b0Jpd29ybzRRd0VUOUs6bmxzRDlNMHhTUHFXVkZGTGI4MmNkZw==' }  // 2
+// });
 
 const MainPage = memo(() => {
     const dispatch = useAppDispatch();
-    const films = useSelector((state: StateSchema) => state.main.films);
-    const page = useSelector((state: StateSchema) => state.main.page);
-    const genre = useSelector((state: StateSchema) => state.main.genre);
-    const isSearch = useSelector((state: StateSchema) => state.main.isSearch);
-    const isLoading = useSelector((state: StateSchema) => state.main.isLoading);
-    const error = useSelector((state: StateSchema) => state.main.error);
+    const films = useSelector(selectFilms);
+    const filmsMessage = useSelector(selectFilmsMessage);
+    const page = useSelector(selectPage);
+    const genre = useSelector(selectGenre);
+    const isSearch = useSelector(selectIsSearch);
+    const isLoading = useSelector(selectIsLoading);
+    const error = useSelector(selectError);
 
     useEffect(() => {
+        // const f = async () => {
+        //     const elasticResult = await client.search({
+        //         index: 'test-index-3',
+        //         query: {
+        //             match: {
+        //                 "name": "Джентльмены"
+        //             }
+        //         }
+        //     })
+        //
+        //     console.log(await elasticResult)
+        // }
+
+        // f();
+
         // @ts-ignore
-        // dispatch(fetchFilmsData(page));
-    }, [isLoading]);
+        dispatch(fetchFilmsData(page));
+    }, []);
 
     const showMore = () => {
-        // dispatch(mainActions.setPage(page + 1));
         console.log(page);
-        if (genre) {
+        if (genre && genre !== Genres.ALL) {
             // @ts-ignore
             dispatch(fetchFilmsByGenre({ page, genre }));
         } else {
@@ -61,37 +69,17 @@ const MainPage = memo(() => {
     return (
         <MainContainer>
             {!isSearch && <GenresList />}
+
             <FilmsWrapper>
                 {films && films.map((film) => (
                     <FilmCard key={film.id} film={film} />
                 ))}
+                {isLoading && <FilmsSkeleton />}
             </FilmsWrapper>
 
-            {isLoading &&
-                <FilmsWrapper>
-                    <SkeletonItem>
-                        <Skeleton />
-                        <Skeleton width={'200px'} height={'20px'} />
-                        <Skeleton width={'100px'} height={'20px'} />
-                    </SkeletonItem>
-                    <SkeletonItem>
-                        <Skeleton />
-                        <Skeleton width={'200px'} height={'20px'} />
-                        <Skeleton width={'100px'} height={'20px'} />
-                    </SkeletonItem>
-                    <SkeletonItem>
-                        <Skeleton />
-                        <Skeleton width={'200px'} height={'20px'} />
-                        <Skeleton width={'100px'} height={'20px'} />
-                    </SkeletonItem>
-                    <SkeletonItem>
-                        <Skeleton />
-                        <Skeleton width={'200px'} height={'20px'} />
-                        <Skeleton width={'100px'} height={'20px'} />
-                    </SkeletonItem>
-                </FilmsWrapper>
-            }
-            {!isLoading || !isSearch && <button onClick={showMore}>Показать больше</button>}
+            {filmsMessage && <div>{filmsMessage}</div>}
+
+            {isLoading || !isSearch && <StyledButton onClick={showMore}>Показать больше</StyledButton>}
         </MainContainer>
     );
 });

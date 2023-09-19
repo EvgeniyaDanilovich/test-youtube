@@ -1,20 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { mainReducer, type MainScheme } from './slices/mainSlice';
+import { filmsReducer, type FilmsScheme } from './slices/filmsSlice';
 import { useDispatch } from 'react-redux';
+import { searchApi } from './services/searchService/searchService';
 
 export interface StateSchema {
-    main: MainScheme;
-    // [filmApi.reducerPath]: ReturnType<typeof filmApi.reducer>;
+    films: FilmsScheme;
 }
 
 // <StateSchema>
-export const store = configureStore<StateSchema>({
+
+export const store = configureStore({
     reducer: {
-        main: mainReducer,
-        // [filmApi.reducerPath]: filmApi.reducer,
-        // [searchApi.reducerPath]: searchApi.reducer,
+        films: filmsReducer,
+        [searchApi.reducerPath]: searchApi.reducer,
     },
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(filmApi.middleware)
+
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(searchApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>

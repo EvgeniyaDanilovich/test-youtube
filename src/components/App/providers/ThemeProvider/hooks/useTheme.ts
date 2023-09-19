@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LOCAL_STORAGE_THEME_KEY, Theme } from '../../../types/themeTypes';
-//
-// export interface UseThemeResult [
-//     theme: Theme;
-//     switchTheme: () => void;
-// ]
 
-// const currentTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme;
-
-// : UseThemeResult
-export const useTheme = () => {
+export const useTheme = (): [Theme, () => void] => {
     const [theme, setTheme] = useState(Theme.LIGHT);
 
     const setMode = (mode) => {
@@ -25,8 +17,6 @@ export const useTheme = () => {
         const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme;
         localTheme && setTheme(localTheme);
     }, []);
-
-    // localStorage.setItem(LOCAL_STORAGE_THEME_KEY, theme);
 
     return [theme, switchTheme];
 };

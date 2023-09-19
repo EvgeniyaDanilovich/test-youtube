@@ -22,34 +22,30 @@ export interface IVideo {
 export interface Film {
     id: number;
     name: string;
-    description: string;
-    genres: IGenres[];
+    // description: string;
+    // genres: IGenres[];
     premiere: IPremiere;
     poster: IPoster;
     videos: IVideo;
 }
 
-
-// export interface Film {
-//     'kinopoiskId': number,
-//     'imdbId': string,
-//     'nameRu': string,
-//     'nameEn': string,
-//     'nameOriginal': string,
-//     'countries': [
-//         {
-//             'country': string
-//         }
-//     ],
-//     'genres': [
-//         {
-//             'genre': string
-//         }
-//     ],
-//     'ratingKinopoisk': number,
-//     'ratingImdb': number,
-//     'year': number,
-//     'type': string,
-//     'posterUrl': string,
-//     'posterUrlPreview': string
-// }
+export interface FilmSearched {
+    id: number;
+    name: string;
+    description: string;
+    genres: IGenres[];
+    poster: IPoster;
+    alternativeName: string;
+    backdrop: string;
+    countries: string[];
+    enName: string;
+    logo: string;
+    movieLength: number;
+    names: string[];
+    rating: number;
+    releaseYears: number[];
+    shortDescription: string;
+    type: string;
+    votes: number;
+    year: number;
+}

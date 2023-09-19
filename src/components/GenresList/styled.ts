@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { deviceSize } from '../App/styles/globalStyles';
 
 export const GenresListUl = styled.ul`
   display: flex;
@@ -6,6 +7,10 @@ export const GenresListUl = styled.ul`
   justify-content: center;
   gap: 10px;
   margin-bottom: 64px;
+
+  @media (max-width: ${deviceSize['laptop-m']}) {
+    margin-bottom: 45px;
+  }
 `;
 
 interface GenresListItemProps {

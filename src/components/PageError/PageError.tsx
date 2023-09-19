@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { PageErrorWrapper } from './styled';
+import { PageErrorWrapper, ErrorText, ErrorButton } from './styled';
 
 export const PageError = memo(() => {
     const onReload = () => {
@@ -8,11 +8,10 @@ export const PageError = memo(() => {
 
     return (
         <PageErrorWrapper>
-            <p>
-                Что-то пошло не так
-            </p>
-            <button onClick={onReload}>Перезагрузите страницу</button>
-            {/* <Button onClick={onReload}>Перезагрузите страницу</Button> */}
+            <ErrorText>
+                Что-то пошло не так.
+            </ErrorText>
+            <ErrorButton onClick={onReload}>Перезагрузите страницу</ErrorButton>
         </PageErrorWrapper>
     );
 });

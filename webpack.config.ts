@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 
 export type BuildMode = 'production' | 'development';
 
@@ -22,15 +23,12 @@ export default (env: buildEnv) => {
 
         devServer: isDev ? {
             port: PORT,
-            open: true
+            open: true,
+            hot: true,
         } : undefined,
 
         module: {
             rules: [
-                {
-                    test: /\.svg$/,
-                    use: ['@svgr/webpack'],
-                },
                 {
                     test: /\.(js|jsx|tsx)$/,
                     exclude: /node_modules/,
@@ -46,33 +44,33 @@ export default (env: buildEnv) => {
                     use: 'ts-loader',
                     exclude: /node_modules/,
                 },
+                {
+                    test: /\.svg$/,
+                    use: ['@svgr/webpack'],
+                },
+                {
+                    test: /\.(png|jpe?g|gif|woff2|woff)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                        },
+                    ],
+                }
             ],
         },
 
-        // Uncaught TypeError: The "original" argument must be of type Function
-        // Module not found: Error: Can't resolve 'diagnostics_channel, async_hooks, worker_threads
         resolve: {
-            fallback: {
-                "buffer": false,
-                "stream": false,
-                "assert": false,
-                "url": false,
-                "http": false,
-                "util": false,
-                "zlib": false,
-                "os": false,
-                "querystring": false,
-                "https": false,
-                "console": false,
-                "net": false,
-                "tls": false,
-                // "diagnostics_channel": false,
-                // "async_hooks": false,
-                // "perf_hooks": false,
-                // "worker_threads": false,
-                "crypto": require.resolve("crypto-browserify")
-            },
             extensions: ['.tsx', '.ts', '.js'],
+            fallback: {
+                'stream': false,
+                'util': false,
+                'diagnostics_channel': false,
+                'worker_threads': false,
+                'perf_hooks': false,
+                'net': false,
+                'tls': false,
+                'async_hooks': false
+            }
         },
         output: {
             filename: '[name].[contenthash].js',
@@ -84,6 +82,8 @@ export default (env: buildEnv) => {
                 template: path.resolve(__dirname, 'public', 'index.html'),
             }),
             new webpack.ProgressPlugin(),
+            new webpack.HotModuleReplacementPlugin(),
+            new NodePolyfillPlugin()
         ],
     };
 
