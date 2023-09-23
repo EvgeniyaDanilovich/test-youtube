@@ -1,12 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { FilteredFilm } from '../../types/filmTypes';
-import { Enums } from '../../../components/App/types/enums';
-
-// import Client from '@elastic/elasticsearch'
+import { Genres } from '../../../components/App/types/enums';
 
 interface FilterFilmsByGenreArgs {
-    genre: Enums;
+    genre: Genres;
     fromItem: number;
+}
+
+interface FilterFilmsResponse {
+    hits: {
+        hits: FilteredFilm[]
+    };
 }
 
 export const searchApi = createApi({
@@ -19,21 +23,6 @@ export const searchApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        // createIndex: builder.mutation({
-        //     query: (body) => ({
-        //         url: '/test-index/_doc',
-        //         method: 'POST',
-        //         body
-        //     })
-        // }),
-        // createIndexWithId: builder.mutation({
-        //     query: (body) => ({
-        //         url: '/test-index/_doc/1',
-        //         method: 'PUT',
-        //         body
-        //     })
-        // }),
-
         filterFilmsByGenre: builder.mutation<FilteredFilm[], FilterFilmsByGenreArgs>({
             query: ({ genre, fromItem }) => ({
                 url: '/films/_search',
@@ -52,12 +41,10 @@ export const searchApi = createApi({
                     }
                 }
             }),
-            // @ts-ignore
-            transformResponse: (response) => response?.hits?.hits,
+            transformResponse: (response: FilterFilmsResponse) => response?.hits.hits,
         }),
-
-        searchFilmByName: builder.mutation({
-            query: (name) => ({
+        searchFilmByName: builder.mutation<FilteredFilm[], string>({
+            query: (name) => ( {
                 url: '/films/_search',
                 method: 'POST',
                 body: {
@@ -70,17 +57,9 @@ export const searchApi = createApi({
                     }
                 }
             }),
-            // @ts-ignore
-            transformResponse: (response) => response?.hits?.hits,
-            // transformResponse: (response) => response?.hits?.hits;
-        }),
-        getIndexFilms: builder.query({
-            query: () => ({
-                url: '/films/_search',
-                // url: '/',
-            })
+            transformResponse: (response: FilterFilmsResponse) => response?.hits?.hits,
         })
     })
 });
 
-export const { useGetIndexFilmsQuery, useSearchFilmByNameMutation, useFilterFilmsByGenreMutation } = searchApi;
+export const { useSearchFilmByNameMutation, useFilterFilmsByGenreMutation } = searchApi;

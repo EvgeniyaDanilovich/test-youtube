@@ -4,16 +4,16 @@ import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsDa
 import { useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { GenresListItem, GenresListUl } from './styled';
-import { Enums } from '../App/types/enums';
+import { Genres } from '../App/types/enums';
 import { selectGenre } from '../../store/selectors/filmsSelectors';
 
 interface GenresListProps {
-    filterFilms: ({ genre, fromItem }: {genre: Enums, fromItem: number}) => void;
+    filterFilms: ({ genre, fromItem }: {genre: Genres, fromItem: number}) => void;
 }
 
 export const GenresList = memo(({ filterFilms }: GenresListProps) => {
     const dispatch = useAppDispatch();
-    const [activeAll, setActiveAll] = useState<string>(Enums.ALL);
+    const [activeAll, setActiveAll] = useState<string>(Genres.ALL);
     const [activeDrama, setActiveDrama] = useState('');
     const [activeComedy, setActiveComedy] = useState('');
     const [activeFantastic, setActiveFantastic] = useState('');
@@ -22,7 +22,7 @@ export const GenresList = memo(({ filterFilms }: GenresListProps) => {
     // const [filterFilms, { data: films }] = useFilterFilmsByGenreMutation();
 
     useEffect(() => {
-        if (genre === Enums.ALL) {
+        if (genre === Genres.ALL) {
             resetGenre();
         }
     }, [genre]);
@@ -34,12 +34,12 @@ export const GenresList = memo(({ filterFilms }: GenresListProps) => {
     // }, [films]);
 
     const resetGenre = () => {
-        setActiveAll(Enums.ALL);
+        setActiveAll(Genres.ALL);
         setActiveDrama('');
         setActiveComedy('');
         setActiveFantastic('');
         setActiveDetective('');
-        dispatch(filmsActions.setGenre(Enums.ALL));
+        dispatch(filmsActions.setGenre(Genres.ALL));
     };
 
     const getAllGenres = useCallback(() => {
@@ -56,10 +56,10 @@ export const GenresList = memo(({ filterFilms }: GenresListProps) => {
         dispatch(filmsActions.setGenre(genre));
 
         setActiveAll('');
-        genre === Enums.DRAMA ? setActiveDrama(Enums.DRAMA) : setActiveDrama('');
-        genre === Enums.COMEDY ? setActiveComedy(Enums.COMEDY) : setActiveComedy('');
-        genre === Enums.FANTASTIC ? setActiveFantastic(Enums.FANTASTIC) : setActiveFantastic('');
-        genre === Enums.DETECTIVE ? setActiveDetective(Enums.DETECTIVE) : setActiveDetective('');
+        genre === Genres.DRAMA ? setActiveDrama(Genres.DRAMA) : setActiveDrama('');
+        genre === Genres.COMEDY ? setActiveComedy(Genres.COMEDY) : setActiveComedy('');
+        genre === Genres.FANTASTIC ? setActiveFantastic(Genres.FANTASTIC) : setActiveFantastic('');
+        genre === Genres.DETECTIVE ? setActiveDetective(Genres.DETECTIVE) : setActiveDetective('');
 
         if (genre) {
             // @ts-ignore
@@ -71,10 +71,10 @@ export const GenresList = memo(({ filterFilms }: GenresListProps) => {
     return (
         <GenresListUl>
             <GenresListItem active={activeAll} onClick={getAllGenres}>Все</GenresListItem>
-            <GenresListItem active={activeDrama} onClick={() => switchGenre(Enums.DRAMA)}>Драма</GenresListItem>
-            <GenresListItem active={activeComedy} onClick={() => switchGenre(Enums.COMEDY)}>Комедия</GenresListItem>
-            <GenresListItem active={activeFantastic} onClick={() => switchGenre(Enums.FANTASTIC)}>Фантастика</GenresListItem>
-            <GenresListItem active={activeDetective} onClick={() => switchGenre(Enums.DETECTIVE)}>Детектив</GenresListItem>
+            <GenresListItem active={activeDrama} onClick={() => switchGenre(Genres.DRAMA)}>Драма</GenresListItem>
+            <GenresListItem active={activeComedy} onClick={() => switchGenre(Genres.COMEDY)}>Комедия</GenresListItem>
+            <GenresListItem active={activeFantastic} onClick={() => switchGenre(Genres.FANTASTIC)}>Фантастика</GenresListItem>
+            <GenresListItem active={activeDetective} onClick={() => switchGenre(Genres.DETECTIVE)}>Детектив</GenresListItem>
         </GenresListUl>
     );
 });

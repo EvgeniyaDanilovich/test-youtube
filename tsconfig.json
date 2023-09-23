@@ -10,7 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strictNullChecks": false,
-    "strict": false
+    "strict": false,
   },
   "ts-node": {
     "compilerOptions": {
@@ -23,6 +23,7 @@
     ]
   },
   "include": [
+    "./jest.config.ts",
     "./src/**/*.ts",
     "./src/**/*.tsx"
   ]

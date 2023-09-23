@@ -5,7 +5,7 @@ import { LOCAL_STORAGE_THEME_KEY, Theme } from '../App/types/themeTypes';
 import { HeaderContainer, LogoText, LogoWrapper, RowWrapper } from './styled';
 import LogoIcon from '../../assets/images/logo.svg';
 import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsData';
-import { Enums, Messages } from '../App/types/enums';
+import { Genres, Messages } from '../App/types/enums';
 import { SwitchSlider } from '../SwitchSlider/SwitchSlider';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { useSearchFilmByNameMutation } from '../../store/services/searchService/searchService';
@@ -37,13 +37,13 @@ export const Header = memo(({ switchTheme }: HeaderProps) => {
         if (error) {
             dispatch(filmsActions.setError('Some error'));
         }
-        console.log(error);
     }, [error]);
 
     const handleOnSubmit = useCallback((inputValue) => {
+        dispatch(filmsActions.setMessage(undefined));
         searchFilm(inputValue);
         dispatch(filmsActions.resetFilms());
-        dispatch(filmsActions.setSearch(true));
+        dispatch(filmsActions.setIsSearch(true));
         // @ts-ignore
         // dispatch(fetchFilmByName(inputValue));
     }, []);
@@ -53,10 +53,11 @@ export const Header = memo(({ switchTheme }: HeaderProps) => {
     }, [switchTheme]);
 
     const goAllFilms = useCallback(() => {
-        dispatch(filmsActions.setSearch(false));
+        dispatch(filmsActions.setMessage(undefined));
+        dispatch(filmsActions.setIsSearch(false));
         dispatch(filmsActions.resetFilms());
         dispatch(filmsActions.resetPagination());
-        dispatch(filmsActions.setGenre(Enums.ALL));
+        dispatch(filmsActions.setGenre(Genres.ALL));
         // @ts-ignore
         dispatch(fetchFilmsData(1));
     }, []);

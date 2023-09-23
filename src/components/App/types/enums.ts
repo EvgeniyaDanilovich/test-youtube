@@ -1,4 +1,4 @@
-export enum Enums {
+export enum Genres {
     ALL = 'все',
     DRAMA = 'драма',
     DETECTIVE = 'детектив',

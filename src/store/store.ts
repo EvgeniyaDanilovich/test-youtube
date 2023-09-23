@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { filmsReducer, type FilmsScheme } from './slices/filmsSlice';
-import { useDispatch } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { searchApi } from './services/searchService/searchService';
 
-export interface StateSchema {
-    films: FilmsScheme;
-}
+// export interface StateSchema {
+//     films: FilmsScheme;
+//     [searchApi.reducerPath]: ReturnType<typeof searchApi.reducer>
+// }
 
 // <StateSchema>
 
@@ -18,8 +19,9 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(searchApi.middleware)
 });
 
-export type RootState = ReturnType<typeof store.getState>
+export type StateSchema = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch;
-// export type AppDispatch = ReturnType<typeof createReduxStore>['dispatch'];
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+// export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<StateSchema> = useSelector;

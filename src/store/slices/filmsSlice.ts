@@ -1,10 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { fetchFilmsData } from '../services/fetchFilmsData/fetchFilmsData';
-import { fetchFilmsByGenre } from '../services/fetchFilmsByGenre/fetchFilmsByGenre';
 import { Film, FilteredFilm } from '../types/filmTypes';
-import { fetchFilmByName } from '../services/fetchFilmByName/fetchFilmByName';
-import { Enums, Messages } from '../../components/App/types/enums';
-import { StateSchema } from '../store';
+import { Genres, Messages } from '../../components/App/types/enums';
 
 export interface FilmsScheme {
     films: Film[];
@@ -13,7 +10,7 @@ export interface FilmsScheme {
     isLoading: boolean;
     isSearch: boolean;
     error?: string | undefined;
-    genre: Enums;
+    genre: Genres;
     page: number;
     fromItem: number;
 }
@@ -25,7 +22,7 @@ const initialState: FilmsScheme = {
     isLoading: false,
     isSearch: false,
     error: undefined,
-    genre: Enums.ALL,
+    genre: Genres.ALL,
     page: 1,
     fromItem: 0,
 };
@@ -37,7 +34,6 @@ export const filmsSlice = createSlice({
         resetFilms: (state: FilmsScheme) => {
             state.films = [];
             state.filteredFilms = [];
-            state.message = undefined;
         },
         resetPagination: (state: FilmsScheme) => {
             state.page = 1;
@@ -46,14 +42,14 @@ export const filmsSlice = createSlice({
         setError: (state: FilmsScheme, action: PayloadAction<string>) => {
             state.error = action.payload;
         },
-        setSearch: (state: FilmsScheme, action: PayloadAction<boolean>) => {
+        setIsSearch: (state: FilmsScheme, action: PayloadAction<boolean>) => {
             state.isSearch = action.payload;
         },
-        setGenre: (state: FilmsScheme, action: PayloadAction<Enums>) => {
+        setGenre: (state: FilmsScheme, action: PayloadAction<Genres>) => {
             state.genre = action.payload;
         },
-        setMessage: (state: FilmsScheme, action: PayloadAction<Messages>) => {
-            state.message = action.payload
+        setMessage: (state: FilmsScheme, action: PayloadAction<Messages | undefined>) => {
+            state.message = action.payload;
         },
         setIsLoading: (state: FilmsScheme, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
@@ -77,9 +73,11 @@ export const filmsSlice = createSlice({
                 state.page = state.page + 1;
             }
         });
-        builder.addCase(fetchFilmsData.rejected, (state: FilmsScheme, action) => {
+        builder.addCase(fetchFilmsData.rejected, (state: FilmsScheme, action: PayloadAction<string>) => {
             state.isLoading = false;
-            // state.error = action?.payload;
+            if (action.payload) {
+                state.error = action?.payload;
+            }
         });
         // builder.addCase(fetchFilmsByGenre.pending, (state: FilmsScheme) => {
         //     state.error = undefined;

@@ -1,7 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 
 export type BuildMode = 'production' | 'development';
 
@@ -61,16 +60,6 @@ export default (env: buildEnv) => {
 
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-            fallback: {
-                'stream': false,
-                'util': false,
-                'diagnostics_channel': false,
-                'worker_threads': false,
-                'perf_hooks': false,
-                'net': false,
-                'tls': false,
-                'async_hooks': false
-            }
         },
         output: {
             filename: '[name].[contenthash].js',
@@ -83,7 +72,6 @@ export default (env: buildEnv) => {
             }),
             new webpack.ProgressPlugin(),
             new webpack.HotModuleReplacementPlugin(),
-            new NodePolyfillPlugin()
         ],
     };
 
