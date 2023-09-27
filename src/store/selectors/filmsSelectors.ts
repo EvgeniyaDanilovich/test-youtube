@@ -1,4 +1,4 @@
-import { StateSchema } from '../store';
+import { type StateSchema } from '@/store';
 
 export const selectFilms = (state: StateSchema) => state.films.films;
 export const selectFilteredFilms = (state: StateSchema) => state.films.filteredFilms;

@@ -1,6 +1,7 @@
 declare global {
-    namespace Cypress {
-        interface Chainable {
-        }
-    }
+	namespace Cypress {
+		interface Chainable {
+			//
+		}
+	}
 }

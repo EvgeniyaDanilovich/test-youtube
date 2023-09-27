@@ -4,3 +4,6 @@ dist
 coverage
 .eslintrc.js
 .babel.config.json
+.webpack.config.ts
+*.config.ts
+cypress

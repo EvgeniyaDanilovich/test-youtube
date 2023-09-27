@@ -1,15 +1,15 @@
 import { createGlobalStyle } from 'styled-components';
 
 interface DeviceSizeI {
-    'mobile-l': string,
-    'laptop-m': string,
-    'laptop-l': string,
+	'mobile-l': string;
+	'laptop-m': string;
+	'laptop-l': string;
 }
 
 export const deviceSize: DeviceSizeI = {
-    'mobile-l': '425px',
-    'laptop-m': '645px',
-    'laptop-l': '768px',
+	'mobile-l': '425px',
+	'laptop-m': '645px',
+	'laptop-l': '768px',
 };
 
 export const Global = createGlobalStyle`
