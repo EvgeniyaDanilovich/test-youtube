@@ -18,13 +18,13 @@ import { AppDispatch } from '../../store';
 export const fetchFilmsData = createAsyncThunk<Film[], number, { dispatch: AppDispatch, rejectValue: string }>(
     'main/fetchFilmsData',
     async (page, thunkAPI) => {
-        // const url = `https://api.kinopoisk.dev/v1.3/movie?limit=16&page=${page}&selectFields=id+premiere+genres+poster.url+name+videos.trailers.url`;
-        const url = `https://api.kinopoisk.dev/v1.3/movie?limit=16&page=1&selectFields=id+premiere+genres+poster.url+name+videos.trailers.url`;
+        const url = `https://api.kinopoisk.dev/v1.3/movie?limit=16&page=${page}&selectFields=id+premiere+genres+poster.url+name+videos.trailers.url`;
+        // const url = `https://api.kinopoisk.dev/v1.3/movie?limit=16&page=1&selectFields=id+premiere+genres+poster.url+name+videos.trailers.url`;
         const options = {
             method: 'GET',
             headers: {
-                'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'   // me
-                // 'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'  // kate
+                // 'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'   // me
+                'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'  // kate
             }
         };
         try {

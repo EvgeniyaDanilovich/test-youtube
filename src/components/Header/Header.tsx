@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { filmsActions } from '../../store/slices/filmsSlice';
 import { LOCAL_STORAGE_THEME_KEY, Theme } from '../App/types/themeTypes';
-import { HeaderContainer, LogoText, LogoWrapper, RowWrapper } from './styled';
+import { HeaderContainer, LogoContainer, LogoText, LogoWrapper, RowWrapper } from './styled';
 import LogoIcon from '../../assets/images/logo.svg';
 import { fetchFilmsData } from '../../store/services/fetchFilmsData/fetchFilmsData';
 import { Genres, Messages } from '../App/types/enums';
@@ -65,10 +65,12 @@ export const Header = memo(({ switchTheme }: HeaderProps) => {
     return (
         <HeaderContainer>
             <RowWrapper>
-                <LogoWrapper onClick={goAllFilms}>
-                    <LogoIcon />
-                    <LogoText>ModsenFilms</LogoText>
-                </LogoWrapper>
+                <LogoContainer>
+                    <LogoWrapper onClick={goAllFilms} data-testid="LogoWrapper">
+                        <LogoIcon />
+                        <LogoText>ModsenFilms</LogoText>
+                    </LogoWrapper>
+                </LogoContainer>
 
                 <SearchForm handleOnSubmit={handleOnSubmit} />
 

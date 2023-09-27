@@ -22,6 +22,7 @@ export const searchApi = createApi({
             return headers;
         }
     }),
+    tagTypes: ['FilmsByGenre', 'FilmByName'],
     endpoints: (builder) => ({
         filterFilmsByGenre: builder.mutation<FilteredFilm[], FilterFilmsByGenreArgs>({
             query: ({ genre, fromItem }) => ({
@@ -42,6 +43,8 @@ export const searchApi = createApi({
                 }
             }),
             transformResponse: (response: FilterFilmsResponse) => response?.hits.hits,
+            // @ts-ignore
+            providesTags: ['FilmsByGenre'],
         }),
         searchFilmByName: builder.mutation<FilteredFilm[], string>({
             query: (name) => ( {
@@ -57,6 +60,8 @@ export const searchApi = createApi({
                     }
                 }
             }),
+            // @ts-ignore
+            providesTags: ['FilmByName'],
             transformResponse: (response: FilterFilmsResponse) => response?.hits?.hits,
         })
     })

@@ -32,25 +32,18 @@ export const RowWrapper = styled.div`
   }
 `;
 
-
+export const LogoContainer = styled.div`
+  flex: 1 1 auto;
+`
 
 export const LogoWrapper = styled.div`
-  flex: 1 1 auto;
   display: flex;
   align-items: center;
+  max-width: 180px;
   column-gap: 10px;
   cursor: pointer;
   margin-right: 15px;
 `;
-
-// export const StyledLogo = styled(LogoIcon)`
-//   width: 50px;
-//   height: 50px;
-//
-//   &:first-child{
-//     fill: ${({ theme }) => theme.colors.extra};
-//   }
-// `;
 
 export const LogoText = styled.span`
   font-weight: 700;

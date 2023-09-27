@@ -66,7 +66,7 @@ const MainPage = memo(() => {
     }
 
     return (
-        <MainContainer>
+        <MainContainer data-testid='MainPage'>
             {!isSearch && <GenresList filterFilms={filterFilms} />}
 
             <FilmsWrapper>
@@ -76,7 +76,7 @@ const MainPage = memo(() => {
                 {isLoading && <FilmsSkeleton />}
             </FilmsWrapper>
 
-            <FilmsWrapper>
+            <FilmsWrapper data-testid='FilmsWrapper'>
                 {filteredFilms && filteredFilms.map((film) => (
                     <FilmCard key={film._source.id} film={film._source} />
                 ))}

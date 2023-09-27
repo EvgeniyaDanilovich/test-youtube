@@ -29,7 +29,7 @@ export const FilmCard = memo(({ film }: FilmCardProps) => {
     };
 
     return (
-        <div>
+        <div data-testid="FilmItem">
             {poster ?
                 <FilmImg onClick={handleModal} src={poster} alt={'film'} /> :
                 <FilmImg onClick={handleModal} src={NoPoster} alt={'film'} />
