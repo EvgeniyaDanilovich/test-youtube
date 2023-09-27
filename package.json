@@ -10,7 +10,8 @@
 		"lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix",
 		"format": "npx prettier . --write",
 		"test:unit": "jest --config jest.config.ts",
-		"test:e2e": "cypress open"
+		"test:e2e": "cypress open",
+		"prepare": "husky install"
 	},
 	"repository": "git@github.com:EvgeniyaDanilovich/test-youtube.git",
 	"author": "EvgeniyaDanilovich <evgeniyadanilovich@gmail.com>",
@@ -50,7 +51,8 @@
 		"typescript": "*",
 		"webpack": "^5.88.2",
 		"webpack-cli": "^5.1.4",
-		"webpack-dev-server": "^4.15.1"
+		"webpack-dev-server": "^4.15.1",
+		"husky": "^8.0.0"
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^1.9.5",

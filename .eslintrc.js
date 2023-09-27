@@ -6,22 +6,6 @@ module.exports = {
 	},
 	extends: ['standard-with-typescript', 'plugin:react/recommended', 'prettier'],
 	parser: '@typescript-eslint/parser',
-	// 'overrides': [
-	//     {
-	//         'env': {
-	//             'node': true
-	//         },
-	//         'files': [
-	//             '.eslintrc.{js,cjs}'
-	//         ],
-	//         'parserOptions': {
-	//             'sourceType': 'script',
-	//             'project': ['./tsconfig.json'] //
-	//         }
-	//     }
-	// ],
-	// {**/*,*}.{js,ts,jsx,tsx,html,vue}
-	//    **/*.(js|ts|jsx|tsx|html|vue)
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
