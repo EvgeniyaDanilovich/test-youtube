@@ -16,9 +16,9 @@ interface FilterFilmsResponse {
 export const searchApi = createApi({
 	reducerPath: 'searchApi',
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'https://c2f49d7feaa948008026e0bb360cd821.us-central1.gcp.cloud.es.io',
+		baseUrl: 'https://147b35e8cd104a0a8b7cbfcfde0fa405.us-central1.gcp.cloud.es.io',
 		prepareHeaders: (headers) => {
-			headers.set('Authorization', 'ApiKey dk9KTHA0b0Jpd29ybzRRd0VUOUs6bmxzRDlNMHhTUHFXVkZGTGI4MmNkZw==');
+			headers.set('Authorization', 'ApiKey OG1DdTM0b0JYTjZ3TU05eTlnbHk6bFRuZDhDNkFRNHFSOGgwRmd4TmNXZw==');
 			return headers;
 		},
 	}),

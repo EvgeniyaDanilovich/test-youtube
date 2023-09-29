@@ -13,8 +13,7 @@ module.exports = {
 	},
 	plugins: ['react', '@typescript-eslint'],
 	rules: {
-		// indent: [2, 4],
-		// '@typescript-eslint/indent': [2, 4],
+		'react/jsx-max-props-per-line': ['error', { maximum: 4 }],
 		'@typescript-eslint/semi': 'off',
 		'@typescript-eslint/prefer-nullish-coalescing': 0,
 		'@typescript-eslint/strict-boolean-expressions': 0,

@@ -16,26 +16,11 @@ global.fetch = jest.fn();
 const mockedFetch = fetch as any;
 
 describe('fetchFilmsDataThunk', () => {
-	// let dispatch: Dispatch;
 	let getState: () => StateSchema;
 
 	beforeEach(() => {
-		// dispatch = jest.fn();
 		getState = jest.fn();
 	});
-
-	// test('should fetch fetchFilmsData with resolved response', async () => {
-	//     mockedFetch.mockResolvedValue({
-	//         ok: true,
-	//         json: () => (Promise.resolve({ docs: [mockFilm] }))
-	//     });
-	//
-	//     const action = fetchFilmsData(1);
-	//     const result = await action(dispatch, getState, undefined);
-	//     // expect(mockedFetch.get).toHaveBeenCalled();
-	//     expect(result.meta.requestStatus).toBe('fulfilled');
-	//     expect(result.payload).toEqual([mockFilm]);
-	// });
 
 	test('should fetch fetchFilmsData with resolved response', async () => {
 		mockedFetch.mockResolvedValue({

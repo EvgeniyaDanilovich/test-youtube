@@ -14,7 +14,6 @@ export default (env: buildEnv) => {
 	const PORT = env.port || 3000;
 	const isDev = mode === 'development';
 
-	// : webpack.Configuration
 	const config = {
 		mode,
 		entry: path.resolve(__dirname, 'src', 'index.tsx'),

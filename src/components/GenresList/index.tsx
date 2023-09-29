@@ -26,14 +26,14 @@ export const GenresList = memo(({ filterFilms }: GenresListProps) => {
 		}
 	}, [genre]);
 
-	const resetGenre = () => {
+	const resetGenre = useCallback(() => {
 		setActiveAll(Genres.ALL);
 		setActiveDrama('');
 		setActiveComedy('');
 		setActiveFantastic('');
 		setActiveDetective('');
 		dispatch(filmsActions.setGenre(Genres.ALL));
-	};
+	}, [setActiveAll, setActiveDrama, setActiveComedy, setActiveFantastic, setActiveDetective, dispatch]);
 
 	const getAllGenres = useCallback(() => {
 		resetGenre();

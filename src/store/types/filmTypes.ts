@@ -34,24 +34,3 @@ export interface FilteredFilm {
 	_score: number;
 	_source: Film;
 }
-
-export interface FilmSearched {
-	id: number;
-	name: string;
-	description: string;
-	genres: IGenres[];
-	poster: IPoster;
-	alternativeName: string;
-	backdrop: string;
-	countries: string[];
-	enName: string;
-	logo: string;
-	movieLength: number;
-	names: string[];
-	rating: number;
-	releaseYears: number[];
-	shortDescription: string;
-	type: string;
-	votes: number;
-	year: number;
-}

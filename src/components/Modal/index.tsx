@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React, { memo, type ReactNode } from 'react';
 import { Portal } from '@components/Portal';
 import { StyledModal, StyledContent } from './styled';
 
@@ -8,7 +8,7 @@ export interface ModalProps {
 	children: ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({ active, setActive, children }) => {
+export const Modal = memo(({ active, setActive, children }: ModalProps) => {
 	const closeModal = () => {
 		setActive(false);
 	};
@@ -27,4 +27,4 @@ export const Modal: React.FC<ModalProps> = ({ active, setActive, children }) => 
 			</StyledModal>
 		</Portal>
 	);
-};
+});

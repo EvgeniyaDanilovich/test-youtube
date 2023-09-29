@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Header } from '@components/Header';
-// import { MainPageAsync as MainPage } from '@pages/MainPage.async';
 import { useTheme } from '@utils/hooks/useTheme';
 import { Theme } from '@components/App/types/themeTypes';
 import { Global } from '@components/App/styles/globalStyles';

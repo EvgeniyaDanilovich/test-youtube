@@ -28,17 +28,3 @@ export const Global = createGlobalStyle`
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 `;
-
-// background: ${({ theme }) => theme.textPrimary};
-// color: ${({ theme }) => theme.background};
-// background-color: ${props => props.theme.colors.textPrimary};
-
-// export const Text = styled.p`
-//   display: block;
-//   font-size: 16px;
-// `;
-//
-// export const Button = styled.button`
-//   border: 1px solid #000;
-//   background-color: transparent;
-// `;
