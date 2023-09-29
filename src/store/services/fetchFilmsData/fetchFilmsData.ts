@@ -9,7 +9,7 @@ export const fetchFilmsData = createAsyncThunk<Film[], number, { dispatch: AppDi
 		const options = {
 			method: 'GET',
 			headers: {
-				'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA'
+				'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA',
 			},
 		};
 		try {
