@@ -78,6 +78,7 @@ export default (env: buildEnv) => {
 		plugins: [
 			new HtmlWebpackPlugin({
 				template: path.resolve(__dirname, 'public', 'index.html'),
+				favicon: './src/assets/images/logo.svg',
 			}),
 			new webpack.ProgressPlugin(),
 			new webpack.HotModuleReplacementPlugin(),

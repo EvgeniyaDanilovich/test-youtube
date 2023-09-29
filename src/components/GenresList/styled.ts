@@ -33,7 +33,11 @@ export const GenresListItem = styled.li<GenresListItemProps>`
 		props.active &&
 		css`
 			color: #ffffff;
-			pointer-events: none;
 			background-color: ${({ theme }) => theme.colors.extra};
+
+			&:hover {
+				color: #ffffff;
+				pointer-events: none;
+			}
 		`}
 `;
