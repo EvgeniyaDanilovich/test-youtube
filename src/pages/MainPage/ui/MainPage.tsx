@@ -34,7 +34,7 @@ const MainPage = memo(() => {
 
 	useEffect(() => {
 		// @ts-ignore
-		dispatch(fetchFilmsData(page));
+		// dispatch(fetchFilmsData(page));
 	}, []);
 
 	// useEffect(() => {

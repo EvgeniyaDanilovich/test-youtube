@@ -12,6 +12,11 @@ interface FilmCardProps {
 export const FilmCard = memo(({ film }: FilmCardProps) => {
 	const [modalActive, setModalActive] = useState<boolean>(false);
 	const [premiere, setPremiere] = useState('');
+	const [poster, setPoster] = useState('');
+
+	useEffect(() => {
+		typeof (film.poster) === 'string' ? setPoster(film.poster) : setPoster(film.poster.url);
+	}, [film]);
 
 	useEffect(() => {
 		setPremiere(film?.premiere?.world?.slice(0, 4));
@@ -23,8 +28,8 @@ export const FilmCard = memo(({ film }: FilmCardProps) => {
 
 	return (
 		<div data-testid="FilmItem">
-			{film.poster.url ? (
-				<FilmImg onClick={handleModal} src={film.poster.url} alt={'film'} />
+			{poster ? (
+				<FilmImg onClick={handleModal} src={poster} alt={'film'} />
 			) : (
 				<FilmImg onClick={handleModal} src={NoPoster} alt={'film'} />
 			)}

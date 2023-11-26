@@ -21,6 +21,7 @@ export const fetchFilmByName = createAsyncThunk<Film[], string, { dispatch: AppD
 			}
 
 			const result = await response.json();
+			console.log(result.docs);
 			return result.docs;
 		} catch (e) {
 			return thunkAPI.rejectWithValue(e.message);
