@@ -46,7 +46,7 @@ export const filmsSlice = createSlice({
 		},
 		setIsLoading: (state: FilmsScheme, action: PayloadAction<boolean>) => {
 			state.isLoading = action.payload;
-		}
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchFilmsData.pending, (state: FilmsScheme) => {

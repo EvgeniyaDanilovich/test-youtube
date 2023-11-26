@@ -10,7 +10,7 @@ export const fetchFilmByName = createAsyncThunk<Film[], string, { dispatch: AppD
 			method: 'GET',
 			headers: {
 				// 'X-API-KEY': 'EQ8PXQ7-9E5MWCF-PR638J9-1M3F9KA', // me
-				'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45'
+				'X-API-KEY': 'J5M4GGT-XQC4SQC-J8RM0ZR-KW1XY45',
 			},
 		};
 
