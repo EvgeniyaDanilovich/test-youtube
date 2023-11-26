@@ -7,82 +7,83 @@ import { GenresList } from '@components/GenresList';
 import { FilmsSkeleton } from '@components/Skeleton/FilmsSkeleton';
 import { Genres } from '@components/App/types/enums';
 import {
-	selectError,
-	selectFilms,
-	selectFilteredFilms,
-	selectFromItem,
-	selectGenre,
-	selectIsLoading,
-	selectIsSearch,
-	selectMessage,
-	selectPage,
+    selectError,
+    selectFilms,
+    selectFilteredFilms,
+    // selectFromItem,
+    selectGenre,
+    selectIsLoading,
+    selectIsSearch,
+    selectMessage,
+    selectPage,
 } from '@store/selectors/filmsSelectors';
-import { useFilterFilmsByGenreMutation } from '@store/services/searchService/searchService';
-import { filmsActions } from '@store/slices/filmsSlice';
+
 
 const MainPage = memo(() => {
-	const dispatch = useAppDispatch();
-	const films = useAppSelector(selectFilms);
-	const filteredFilms = useAppSelector(selectFilteredFilms);
-	const filmsMessage = useAppSelector(selectMessage);
-	const page = useAppSelector(selectPage);
-	const fromItem = useAppSelector(selectFromItem);
-	const genre = useAppSelector(selectGenre);
-	const isSearch = useAppSelector(selectIsSearch);
-	const isLoading = useAppSelector(selectIsLoading);
-	const error = useAppSelector(selectError);
-	const [filterFilms, { data: filteredFilm, isLoading: isLoadingFilteredFilms, error: errorFilteredFilms }] =
-		useFilterFilmsByGenreMutation();
+    const dispatch = useAppDispatch();
+    const films = useAppSelector(selectFilms);
+    const filteredFilms = useAppSelector(selectFilteredFilms);
+    const filmsMessage = useAppSelector(selectMessage);
+    const page = useAppSelector(selectPage);
+    // const fromItem = useAppSelector(selectFromItem);
+    const genre = useAppSelector(selectGenre);
+    const isSearch = useAppSelector(selectIsSearch);
+    const isLoading = useAppSelector(selectIsLoading);
+    const error = useAppSelector(selectError);
+    // const [filterFilms, { data: filteredFilm, isLoading: isLoadingFilteredFilms, error: errorFilteredFilms }] =
+    //     useFilterFilmsByGenreMutation();
 
-	useEffect(() => {
-		// @ts-ignore
-		dispatch(fetchFilmsData(page));
-	}, []);
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchFilmsData(page));
+    }, []);
 
-	useEffect(() => {
-		if (filteredFilm) {
-			dispatch(filmsActions.setFilteredFilms(filteredFilm));
-		}
-	}, [filteredFilm]);
+    // useEffect(() => {
+    //     if (filteredFilm) {
+    //         dispatch(filmsActions.setFilteredFilms(filteredFilm));
+    //     }
+    // }, [filteredFilm]);
 
-	const showMore = () => {
-		if (genre && genre !== Genres.ALL) {
-			filterFilms({ genre, fromItem });
-		} else {
-			// @ts-ignore
-			dispatch(fetchFilmsData(page));
-		}
-	};
+    const showMore = () => {
+        if (genre && genre !== Genres.ALL) {
+            // filterFilms({ genre, fromItem });
+        } else {
+            // @ts-ignore
+            dispatch(fetchFilmsData(page));
+        }
+    };
 
-	if (error || errorFilteredFilms) {
-		return (
-			<MainContainer>
-				<Text>Произошла ошибка</Text>
-			</MainContainer>
-		);
-	}
+// || errorFilteredFilms
+    if (error) {
+        return (
+            <MainContainer>
+                <Text>Произошла ошибка</Text>
+            </MainContainer>
+        );
+    }
 
-	return (
-		<MainContainer data-testid="MainPage">
-			{!isSearch && <GenresList filterFilms={filterFilms} />}
+    return (
+        <MainContainer data-testid="MainPage">
+            {/* {!isSearch && <GenresList filterFilms={filterFilms} />} */}
+            {!isSearch && <GenresList />}
 
-			<FilmsWrapper>
-				{films && films.map((film) => <FilmCard key={film.id} film={film} />)}
-				{isLoading && <FilmsSkeleton />}
-			</FilmsWrapper>
+            <FilmsWrapper>
+                {films && films.map((film) => <FilmCard key={film.id} film={film} />)}
+                {isLoading && <FilmsSkeleton />}
+            </FilmsWrapper>
 
-			<FilmsWrapper data-testid="FilmsWrapper">
-				{filteredFilms && filteredFilms.map((film) => <FilmCard key={film._source.id} film={film._source} />)}
-				{isLoadingFilteredFilms && <FilmsSkeleton />}
-			</FilmsWrapper>
+            <FilmsWrapper data-testid="FilmsWrapper">
+                {filteredFilms && filteredFilms.map((film) => <FilmCard key={film._source.id} film={film._source} />)}
+                {/* {isLoadingFilteredFilms && <FilmsSkeleton />} */}
+            </FilmsWrapper>
 
-			{filmsMessage && <Text>{filmsMessage}</Text>}
-
-			{isLoading || isLoadingFilteredFilms || filmsMessage || isSearch ? null : (
-				<StyledButton onClick={showMore}>Показать больше</StyledButton>
-			)}
-		</MainContainer>
-	);
+            {filmsMessage && <Text>{filmsMessage}</Text>}
+            {/* || isLoadingFilteredFilms */}
+            {isLoading || filmsMessage || isSearch ? null : (
+                <StyledButton onClick={showMore}>Показать больше</StyledButton>
+            )}
+        </MainContainer>
+    );
 });
 
 export default MainPage;

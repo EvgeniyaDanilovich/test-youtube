@@ -19,6 +19,7 @@ export const fetchFilmsData = createAsyncThunk<Film[], number, { dispatch: AppDi
 			}
 
 			const result = await response.json();
+			console.log(result.docs);
 			return result.docs;
 		} catch (e) {
 			return thunkAPI.rejectWithValue(e.message);

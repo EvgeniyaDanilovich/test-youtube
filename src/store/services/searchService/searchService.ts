@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { type FilteredFilm } from '@store/types/filmTypes';
-import { type Genres } from '@components/App/types/enums';
 
-interface FilterFilmsByGenreArgs {
-	genre: Genres;
-	fromItem: number;
-}
+// interface FilterFilmsByGenreArgs {
+// 	genre: Genres;
+// 	fromItem: number;
+// }
 
 interface FilterFilmsResponse {
 	hits: {
@@ -24,30 +23,30 @@ export const searchApi = createApi({
 	}),
 	tagTypes: ['FilmsByGenre', 'FilmByName'],
 	endpoints: (builder) => ({
-		filterFilmsByGenre: builder.mutation<FilteredFilm[], FilterFilmsByGenreArgs>({
-			query: ({ genre, fromItem }) => ({
-				url: '/films/_search',
-				method: 'POST',
-				body: {
-					from: fromItem,
-					size: 16,
-					query: {
-						bool: {
-							must: [
-								{
-									term: {
-										'genres.name': genre,
-									},
-								},
-							],
-						},
-					},
-				},
-			}),
-			transformResponse: (response: FilterFilmsResponse) => response?.hits.hits,
-			// @ts-ignore
-			providesTags: ['FilmsByGenre'],
-		}),
+		// filterFilmsByGenre: builder.mutation<FilteredFilm[], FilterFilmsByGenreArgs>({
+		// 	query: ({ genre, fromItem }) => ({
+		// 		url: '/films/_search',
+		// 		method: 'POST',
+		// 		body: {
+		// 			from: fromItem,
+		// 			size: 16,
+		// 			query: {
+		// 				bool: {
+		// 					must: [
+		// 						{
+		// 							term: {
+		// 								'genres.name': genre,
+		// 							},
+		// 						},
+		// 					],
+		// 				},
+		// 			},
+		// 		},
+		// 	}),
+		// 	transformResponse: (response: FilterFilmsResponse) => response?.hits.hits,
+		// 	// @ts-ignore
+		// 	providesTags: ['FilmsByGenre'],
+		// }),
 		searchFilmByName: builder.mutation<FilteredFilm[], string>({
 			query: (name) => ({
 				url: '/films/_search',
@@ -68,5 +67,5 @@ export const searchApi = createApi({
 		}),
 	}),
 });
-
-export const { useSearchFilmByNameMutation, useFilterFilmsByGenreMutation } = searchApi;
+// useFilterFilmsByGenreMutation
+export const { useSearchFilmByNameMutation } = searchApi;

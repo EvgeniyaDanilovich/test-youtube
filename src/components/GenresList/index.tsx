@@ -6,12 +6,14 @@ import { useAppDispatch } from '@/store';
 import { Genres } from '@components/App/types/enums';
 import { selectGenre } from '@store/selectors/filmsSelectors';
 import { GenresListItem, GenresListUl } from './styled';
+import { fetchFilmsByGenre } from '@store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 
-interface GenresListProps {
-	filterFilms: ({ genre, fromItem }: { genre: Genres; fromItem: number }) => void;
-}
+// interface GenresListProps {
+// 	filterFilms: ({ genre, fromItem }: { genre: Genres; fromItem: number }) => void;
+// }
 
-export const GenresList = memo(({ filterFilms }: GenresListProps) => {
+// export const GenresList = memo(({ filterFilms }: GenresListProps) => {
+export const GenresList = memo(() => {
 	const dispatch = useAppDispatch();
 	const [activeAll, setActiveAll] = useState<string>(Genres.ALL);
 	const [activeDrama, setActiveDrama] = useState('');
@@ -56,7 +58,9 @@ export const GenresList = memo(({ filterFilms }: GenresListProps) => {
 			genre === Genres.DETECTIVE ? setActiveDetective(Genres.DETECTIVE) : setActiveDetective('');
 
 			if (genre) {
-				filterFilms({ genre, fromItem: 0 });
+				// filterFilms({ genre, fromItem: 0 });
+				// @ts-ignore
+				dispatch(fetchFilmsByGenre({ page: 1, genre }));
 			}
 		},
 		[genre]

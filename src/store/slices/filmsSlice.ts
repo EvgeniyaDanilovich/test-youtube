@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { fetchFilmsData } from '@store/services/fetchFilmsData/fetchFilmsData';
 import { type Film, type FilteredFilm } from '@store/types/filmTypes';
 import { Genres, type Messages } from '@components/App/types/enums';
+import { fetchFilmsByGenre } from '@store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 
 export interface FilmsScheme {
 	films: Film[];
@@ -79,6 +80,45 @@ export const filmsSlice = createSlice({
 				state.error = action?.payload;
 			}
 		});
+
+		builder.addCase(fetchFilmsByGenre.pending, (state: FilmsScheme) => {
+			state.error = undefined;
+			state.isLoading = true;
+		});
+		builder.addCase(fetchFilmsByGenre.fulfilled, (state: FilmsScheme, action: PayloadAction<Film[]>) => {
+			if (action.payload) {
+				state.films = [...state.films, ...action.payload];
+				state.page = state.page + 1;
+				state.isLoading = false;
+			}
+		});
+		builder.addCase(fetchFilmsByGenre.rejected, (state: FilmsScheme, action) => {
+			state.isLoading = false;
+			if (action.payload !== '') {
+				state.error = action?.payload;
+			}
+		});
+
+		// builder.addCase(fetchFilmByName.pending, (state: FilmsScheme) => {
+		// 	state.error = undefined;
+		// 	state.isLoading = true;
+		// 	state.isSearch = true;
+		// });
+		// builder.addCase(fetchFilmByName.fulfilled, (state: FilmsScheme, action: PayloadAction<Film[]>) => {
+		// 	if (action.payload) {
+		// 		console.log(action.payload);
+		// 		state.films = action.payload;
+		// 		state.page = 1;
+		// 		state.isLoading = false;
+		// 	}
+		// 	if (!action.payload.length) {
+		// 		state.filmsMessage = 'По вашему запросу ничего не найдено';
+		// 	}
+		// });
+		// builder.addCase(fetchFilmByName.rejected, (state: FilmsScheme, action) => {
+		// 	state.isLoading = false;
+		// 	// state.error = action?.payload;
+		// });
 	},
 });
 
