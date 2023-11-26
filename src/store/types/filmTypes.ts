@@ -27,10 +27,3 @@ export interface Film {
 	poster: IPoster;
 	videos: IVideo;
 }
-
-export interface FilteredFilm {
-	_id: string;
-	_index: string;
-	_score: number;
-	_source: Film;
-}

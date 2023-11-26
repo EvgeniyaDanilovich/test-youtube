@@ -1,5 +1,5 @@
 import { type DeepPartial } from '@reduxjs/toolkit';
-import { type Film, type FilteredFilm } from '@store/types/filmTypes';
+import { type Film } from '@store/types/filmTypes';
 import { fetchFilmsData } from '@store/services/fetchFilmsData/fetchFilmsData';
 import { Genres, Messages } from '@components/App/types/enums';
 import { filmsActions, filmsReducer, type FilmsScheme } from './filmsSlice';
@@ -13,45 +13,24 @@ const film: Film = {
 	videos: { trailers: [{ url: 'url' }] },
 };
 
-const filteredFilm: FilteredFilm = {
-	_id: '1',
-	_index: 'films',
-	_score: 0.23,
-	_source: film,
-};
-
 describe('filmsSlice', () => {
-	test('test set error', () => {
-		const state: DeepPartial<FilmsScheme> = {
-			error: undefined,
-		};
-
-		expect(filmsReducer(state as FilmsScheme, filmsActions.setError('Some error'))).toEqual({
-			error: 'Some error',
-		});
-	});
-
 	test('test reset films', () => {
 		const state: DeepPartial<FilmsScheme> = {
 			films: [film],
-			filteredFilms: [filteredFilm],
 		};
 
 		expect(filmsReducer(state as FilmsScheme, filmsActions.resetFilms())).toEqual({
 			films: [],
-			filteredFilms: [],
 		});
 	});
 
 	test('test reset pagination', () => {
 		const state: DeepPartial<FilmsScheme> = {
 			page: 4,
-			fromItem: 32,
 		};
 
 		expect(filmsReducer(state as FilmsScheme, filmsActions.resetPagination())).toEqual({
 			page: 1,
-			fromItem: 0,
 		});
 	});
 
@@ -89,18 +68,6 @@ describe('filmsSlice', () => {
 		};
 
 		expect(filmsReducer(state as FilmsScheme, filmsActions.setIsLoading(true))).toEqual({ isLoading: true });
-	});
-
-	test('test set filtered film', () => {
-		const state: DeepPartial<FilmsScheme> = {
-			filteredFilms: [],
-			fromItem: 0,
-		};
-
-		expect(filmsReducer(state as FilmsScheme, filmsActions.setFilteredFilms([filteredFilm]))).toEqual({
-			filteredFilms: [filteredFilm],
-			fromItem: 16,
-		});
 	});
 
 	test('test fetch films data service pending', () => {

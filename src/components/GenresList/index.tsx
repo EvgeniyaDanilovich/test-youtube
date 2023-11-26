@@ -8,11 +8,6 @@ import { selectGenre } from '@store/selectors/filmsSelectors';
 import { GenresListItem, GenresListUl } from './styled';
 import { fetchFilmsByGenre } from '@store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 
-// interface GenresListProps {
-// 	filterFilms: ({ genre, fromItem }: { genre: Genres; fromItem: number }) => void;
-// }
-
-// export const GenresList = memo(({ filterFilms }: GenresListProps) => {
 export const GenresList = memo(() => {
 	const dispatch = useAppDispatch();
 	const [activeAll, setActiveAll] = useState<string>(Genres.ALL);
@@ -58,7 +53,6 @@ export const GenresList = memo(() => {
 			genre === Genres.DETECTIVE ? setActiveDetective(Genres.DETECTIVE) : setActiveDetective('');
 
 			if (genre) {
-				// filterFilms({ genre, fromItem: 0 });
 				// @ts-ignore
 				dispatch(fetchFilmsByGenre({ page: 1, genre }));
 			}

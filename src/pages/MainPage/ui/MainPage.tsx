@@ -9,50 +9,39 @@ import { Genres } from '@components/App/types/enums';
 import {
 	selectError,
 	selectFilms,
-	selectFilteredFilms,
-	// selectFromItem,
 	selectGenre,
 	selectIsLoading,
 	selectIsSearch,
 	selectMessage,
 	selectPage,
 } from '@store/selectors/filmsSelectors';
+import { fetchFilmsByGenre } from '@store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 
 const MainPage = memo(() => {
 	const dispatch = useAppDispatch();
 	const films = useAppSelector(selectFilms);
-	const filteredFilms = useAppSelector(selectFilteredFilms);
 	const filmsMessage = useAppSelector(selectMessage);
 	const page = useAppSelector(selectPage);
-	// const fromItem = useAppSelector(selectFromItem);
 	const genre = useAppSelector(selectGenre);
 	const isSearch = useAppSelector(selectIsSearch);
 	const isLoading = useAppSelector(selectIsLoading);
 	const error = useAppSelector(selectError);
-	// const [filterFilms, { data: filteredFilm, isLoading: isLoadingFilteredFilms, error: errorFilteredFilms }] =
-	//     useFilterFilmsByGenreMutation();
 
 	useEffect(() => {
 		// @ts-ignore
-		// dispatch(fetchFilmsData(page));
+		dispatch(fetchFilmsData(page));
 	}, []);
-
-	// useEffect(() => {
-	//     if (filteredFilm) {
-	//         dispatch(filmsActions.setFilteredFilms(filteredFilm));
-	//     }
-	// }, [filteredFilm]);
 
 	const showMore = () => {
 		if (genre && genre !== Genres.ALL) {
-			// filterFilms({ genre, fromItem });
+			// @ts-ignore
+			dispatch(fetchFilmsByGenre({ page, genre }));
 		} else {
 			// @ts-ignore
 			dispatch(fetchFilmsData(page));
 		}
 	};
 
-	// || errorFilteredFilms
 	if (error) {
 		return (
 			<MainContainer>
@@ -63,7 +52,6 @@ const MainPage = memo(() => {
 
 	return (
 		<MainContainer data-testid="MainPage">
-			{/* {!isSearch && <GenresList filterFilms={filterFilms} />} */}
 			{!isSearch && <GenresList />}
 
 			<FilmsWrapper>
@@ -71,13 +59,7 @@ const MainPage = memo(() => {
 				{isLoading && <FilmsSkeleton />}
 			</FilmsWrapper>
 
-			<FilmsWrapper data-testid="FilmsWrapper">
-				{filteredFilms && filteredFilms.map((film) => <FilmCard key={film._source.id} film={film._source} />)}
-				{/* {isLoadingFilteredFilms && <FilmsSkeleton />} */}
-			</FilmsWrapper>
-
 			{filmsMessage && <Text>{filmsMessage}</Text>}
-			{/* || isLoadingFilteredFilms */}
 			{isLoading || filmsMessage || isSearch ? null : (
 				<StyledButton onClick={showMore}>Показать больше</StyledButton>
 			)}

@@ -16,34 +16,11 @@ interface HeaderProps {
 export const Header = memo(({ switchTheme }: HeaderProps) => {
 	const dispatch = useAppDispatch();
 	const [checked, setChecked] = useState(false);
-	// const [searchFilm, { data: films, isLoading, error }] = useSearchFilmByNameMutation();
 
 	useEffect(() => {
 		const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme;
 		localTheme === Theme.DARK ? setChecked(true) : setChecked(false);
 	}, []);
-
-	// useEffect(() => {
-	// 	dispatch(filmsActions.setIsLoading(isLoading));
-	// 	if (films && !films.length) {
-	// 		dispatch(filmsActions.setMessage(Messages.NOT_FOUND));
-	// 	} else {
-	// 		dispatch(filmsActions.setFilteredFilms(films));
-	// 	}
-	// }, [films, isLoading]);
-
-	// useEffect(() => {
-	// 	if (error) {
-	// 		dispatch(filmsActions.setError('Some error'));
-	// 	}
-	// }, [error]);
-
-	// const handleOnSubmit = useCallback((inputValue) => {
-	// 	dispatch(filmsActions.setMessage(undefined));
-	// 	searchFilm(inputValue);
-	// 	dispatch(filmsActions.resetFilms());
-	// 	dispatch(filmsActions.setIsSearch(true));
-	// }, []);
 
 	const onSwitchTheme = useCallback(() => {
 		switchTheme();

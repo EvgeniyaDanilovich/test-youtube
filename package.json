@@ -10,8 +10,7 @@
 		"lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix",
 		"format": "npx prettier . --write",
 		"test:unit": "jest --config jest.config.ts",
-		"test:e2e": "cypress open",
-		"prepare": "husky install"
+		"test:e2e": "cypress open"
 	},
 	"repository": "git@github.com:EvgeniyaDanilovich/test-youtube.git",
 	"author": "EvgeniyaDanilovich <evgeniyadanilovich@gmail.com>",

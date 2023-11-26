@@ -15,7 +15,7 @@ export const FilmCard = memo(({ film }: FilmCardProps) => {
 	const [poster, setPoster] = useState('');
 
 	useEffect(() => {
-		typeof (film.poster) === 'string' ? setPoster(film.poster) : setPoster(film.poster.url);
+		typeof film.poster === 'string' ? setPoster(film.poster) : setPoster(film.poster?.url);
 	}, [film]);
 
 	useEffect(() => {

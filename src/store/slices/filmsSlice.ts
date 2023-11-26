@@ -1,32 +1,28 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { fetchFilmsData } from '@store/services/fetchFilmsData/fetchFilmsData';
-import { type Film, type FilteredFilm } from '@store/types/filmTypes';
-import { Genres, type Messages } from '@components/App/types/enums';
+import { type Film } from '@store/types/filmTypes';
+import { Genres, Messages } from '@components/App/types/enums';
 import { fetchFilmsByGenre } from '@store/services/fetchFilmsByGenre/fetchFilmsByGenre';
 import { fetchFilmByName } from '@store/services/fetchFilmByName/fetchFilmByName';
 
 export interface FilmsScheme {
 	films: Film[];
-	filteredFilms: FilteredFilm[];
 	message: Messages | undefined;
 	isLoading: boolean;
 	isSearch: boolean;
 	error?: string | undefined;
 	genre: Genres;
 	page: number;
-	fromItem: number;
 }
 
 const initialState: FilmsScheme = {
 	films: [],
-	filteredFilms: [],
 	message: undefined,
 	isLoading: false,
 	isSearch: false,
 	error: undefined,
 	genre: Genres.ALL,
 	page: 1,
-	fromItem: 0,
 };
 
 export const filmsSlice = createSlice({
@@ -35,14 +31,9 @@ export const filmsSlice = createSlice({
 	reducers: {
 		resetFilms: (state: FilmsScheme) => {
 			state.films = [];
-			state.filteredFilms = [];
 		},
 		resetPagination: (state: FilmsScheme) => {
 			state.page = 1;
-			state.fromItem = 0;
-		},
-		setError: (state: FilmsScheme, action: PayloadAction<string>) => {
-			state.error = action.payload;
 		},
 		setIsSearch: (state: FilmsScheme, action: PayloadAction<boolean>) => {
 			state.isSearch = action.payload;
@@ -55,13 +46,7 @@ export const filmsSlice = createSlice({
 		},
 		setIsLoading: (state: FilmsScheme, action: PayloadAction<boolean>) => {
 			state.isLoading = action.payload;
-		},
-		setFilteredFilms: (state: FilmsScheme, action: PayloadAction<FilteredFilm[]>) => {
-			if (action.payload) {
-				state.filteredFilms = [...state.filteredFilms, ...action.payload];
-				state.fromItem = state.fromItem + 16;
-			}
-		},
+		}
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchFilmsData.pending, (state: FilmsScheme) => {
@@ -107,13 +92,12 @@ export const filmsSlice = createSlice({
 		});
 		builder.addCase(fetchFilmByName.fulfilled, (state: FilmsScheme, action: PayloadAction<Film[]>) => {
 			if (action.payload) {
-				console.log(action.payload);
-				state.films = action.payload;
+				state.films = [...action.payload];
 				state.page = 1;
 				state.isLoading = false;
 			}
 			if (!action.payload.length) {
-				// state.filmsMessage = 'По вашему запросу ничего не найдено';
+				state.message = Messages.NOT_FOUND;
 			}
 		});
 		builder.addCase(fetchFilmByName.rejected, (state: FilmsScheme, action) => {

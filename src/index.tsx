@@ -10,11 +10,8 @@ const root = createRoot(container);
 
 root.render(
 	<Provider store={store}>
-		{/* <ThemeAppProvider> */}
 		<ErrorBoundary>
-			{/* <Global /> */}
 			<App />
 		</ErrorBoundary>
-		{/* </ThemeAppProvider> */}
 	</Provider>
 );
