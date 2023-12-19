@@ -17,4 +17,3 @@ React, Redux toolkit, TypeScript, Styled-components, Webpack, Jest, Cypress, Hus
 
 ## Screenshots
 ![image](https://github.com/EvgeniyaDanilovich/test-youtube/assets/68774339/bf529757-be28-4ac8-8e52-4d3fccc8f2de)
-
